@@ -5,6 +5,20 @@
  */
 package view;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import model.domain.Artigo;
+import model.domain.ManipulaArquivo;
+
 /**
  *
  * @author cristiano
@@ -58,10 +72,20 @@ public class Principal extends javax.swing.JFrame {
 
         cutMenuItem.setMnemonic('t');
         cutMenuItem.setText("Gerar Nós (Autores)");
+        cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(cutMenuItem);
 
         deleteMenuItem.setMnemonic('d');
         deleteMenuItem.setText("Gerar Arestas");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(deleteMenuItem);
 
         menuBar.add(editMenu);
@@ -94,6 +118,186 @@ public class Principal extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
+  //código para gerar nós
+
+
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+        
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+        
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+        
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+        
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+       
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+        
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+            
+            File arquivo = fc.getSelectedFile();
+        
+            ManipulaArquivo m = new ManipulaArquivo();
+
+
+            ArrayList<String> autores = new ArrayList<String>();
+            autores = m.lerAutores(arquivo);
+            
+            //exibindo lista de autores (Scopus)
+            System.out.println("lista recebida");
+            for(int i=0;i<=autores.size()-1; i++){
+
+                
+                System.out.println(autores.get(i));
+                
+              
+            }
+                
+                String textoEscrita = null;
+                TreeSet<String> nos = new TreeSet<String>();
+                nos = m.geraTreeSet(autores);
+                
+                
+                //Gerar lista de autores de cada trabalho
+                ArrayList<String> autoresPorArtigo = new ArrayList<String>();
+               // autoresPorArtigo = m.lerAutoresPorArtigo(arquivo);
+                
+                
+                
+                
+                textoEscrita = m.gerarNos(textoEscrita,nos);
+                
+                          
+            
+                //Com os nós gerados agora serão salvos no arquivo
+                //.csv escolhido pelo usuário
+                //salvando o arquivo
+                fc.setDialogTitle("Salvando o arquivo");
+                //resposta da janela
+                int resposta2 = fc.showOpenDialog(this);
+
+                //verificando a resposta:
+                //Se o usuário clicar em OK
+                if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                    //Falta salvar o arquivo    
+                    
+                    
+                    File arqSalvo = fc.getSelectedFile();
+                    try {
+                        FileWriter fw = new FileWriter( arqSalvo );
+                        m.escreveCsv(textoEscrita, fw);
+                        JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "Erro"+ex);
+                    }
+
+                }
+
+            
+        }
+        
+                       
+        
+    }//GEN-LAST:event_cutMenuItemActionPerformed
+
+    private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
+          // código para gerar arestas
+        //para autores (Scopus)
+        
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+        
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+        
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+        
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+        
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+       
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+        
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+            
+            File arquivo = fc.getSelectedFile();
+        
+            ManipulaArquivo m = new ManipulaArquivo();
+
+
+            ArrayList<String> autores = new ArrayList<String>();
+            ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+            
+            autores = m.lerAutores(arquivo);
+            artigos = m.lerAutoresPorArtigo(arquivo);
+            
+            //exibindo lista de autores (Scopus)
+            //System.out.println("lista recebida");
+            for(int i=0;i<=autores.size()-1; i++){
+
+                
+                //System.out.println(autores.get(i));
+                
+              
+            }
+                
+            String textoEscrita = null;
+            TreeSet<String> nos = new TreeSet<String>();
+            nos = m.geraTreeSet(autores);
+            textoEscrita = m.gerarArestas(textoEscrita,nos, artigos);
+                
+    
+                
+                
+                          
+            
+                //Com os nós gerados agora serão salvos no arquivo
+                //.csv escolhido pelo usuário
+                //salvando o arquivo
+                fc.setDialogTitle("Salvando o arquivo");
+                //resposta da janela
+                int resposta2 = fc.showOpenDialog(this);
+
+                //verificando a resposta:
+                //Se o usuário clicar em OK
+                if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                    //Falta salvar o arquivo    
+                    
+                    
+                    File arqSalvo = fc.getSelectedFile();
+                    try {
+                        FileWriter fw = new FileWriter( arqSalvo );
+                        m.escreveCsv(textoEscrita, fw);
+                        JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, "Erro"+ex);
+                    }
+
+                }
+
+            
+        }
+        
+
+    }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
