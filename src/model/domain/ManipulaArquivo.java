@@ -188,7 +188,7 @@ public class ManipulaArquivo {
         
         String nome = "";
         //System.out.println("Inserindo Autores na lista Ordenada:");
-        textoEscrita = "ID;LABEL \n";
+        textoEscrita = "Id;Label;Nome"+"\n";
         Iterator<String> iterador = nos.iterator();
         int id = 0;
         while(iterador.hasNext()){
@@ -196,7 +196,7 @@ public class ManipulaArquivo {
             id++;
             nome =iterador.next();
             //System.out.println(nome);
-            textoEscrita = textoEscrita + id+";"+nome+"\n";
+            textoEscrita = textoEscrita + id+";"+nome+";"+nome+"\n";
 
         }
         return textoEscrita;
@@ -271,7 +271,7 @@ public class ManipulaArquivo {
     int idTarget = 0;
     int id = 0;    
     //listando autores por trabalho
-    texto = "ID;SOURCE;TARGET \n";
+    texto = "Id;Source;Target;Type;Weight;Autores\n";
     System.out.println("Artigos");
     System.out.println("--------------------");
     for(int i=0;i<=artigos.size()-1; i++){
@@ -297,7 +297,7 @@ public class ManipulaArquivo {
                 idTarget = m.getIdNo(nome2, nos);
                 System.out.println(nome1+";"+nome2);
                 System.out.println(idSource+";"+idTarget);
-                texto = texto + id+";"+idSource+";"+idTarget+"\n";
+                texto = texto + id+";"+idSource+";"+idTarget+";Undirected;1;"+nome1+" e "+nome2+"\n";
                 k++;
             }
 
