@@ -262,6 +262,37 @@ public class ManipulaArquivo {
     
     
     
+    public int frequeciaArestas(List<Aresta> lista, Aresta aresta){
+        
+        int frequencia = 0;
+        
+        for(int i=0; i<lista.size(); i++){
+            if(aresta.equals(lista.get(i))){
+                
+                /*
+                System.out.println(aresta.toString());
+                System.out.println(lista.get(i).toString());
+                System.out.println("frequencia: "+frequencia);
+                System.out.println("igual");
+                */
+                frequencia++;
+                
+            }
+            else{
+               /* 
+                System.out.println(aresta.toString());
+                System.out.println(lista.get(i).toString());
+                System.out.println("frequencia: "+frequencia);
+                System.out.println("diferente");
+                */
+            }
+            
+        }
+        
+        return frequencia;
+    }
+    
+    
     public String gerarArestas(String texto ,TreeSet<String> nos, 
             ArrayList<Artigo> artigos){
         
@@ -287,13 +318,18 @@ public class ManipulaArquivo {
         int numAutores = artigos.get(i).getAutores().size();
         System.out.println("número de autores "+numAutores);
         for(int j=0;j<numAutores; j++){
+            //Autor origem
             String nome1 = artigos.get(i).getAutores().get(j).getNome();
 
             int k = j+1;
             while(k<numAutores){
                 id++;
+                //id do autor de origem
                 idSource = m.getIdNo(nome1, nos);
+                
+                //Autor de destino
                 String nome2 = artigos.get(i).getAutores().get(k).getNome();
+                //id do autor de destino
                 idTarget = m.getIdNo(nome2, nos);
                 System.out.println(nome1+";"+nome2);
                 System.out.println(idSource+";"+idTarget);
