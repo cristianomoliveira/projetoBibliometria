@@ -1,28 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package view;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.domain.Aresta;
 import model.domain.Artigo;
-import model.domain.ManipulaArquivo;
+import model.domain.Autor;
+import model.domain.ManipuladorDeArquivos;
+import model.domain.ManipuladorDeGrafos;
+import model.domain.No;
 
-/**
- *
- * @author cristiano
- */
+
 public class Principal extends javax.swing.JFrame {
 
     /**
@@ -147,62 +146,40 @@ public class Principal extends javax.swing.JFrame {
             
             File arquivo = fc.getSelectedFile();
         
-            ManipulaArquivo m = new ManipulaArquivo();
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            ArrayList<Autor> lista = new ArrayList<Autor>();
+
+            ArrayList<No> nos = new ArrayList<No>();
+            nos = ma.lerArrayListNos(arquivo);
 
 
-            ArrayList<String> autores = new ArrayList<String>();
-            autores = m.lerAutores(arquivo);
-            
-            //exibindo lista de autores (Scopus)
-            System.out.println("lista recebida");
-            for(int i=0;i<=autores.size()-1; i++){
+            String textoEscrita = mg.gerarTextoNosArrayList("", nos);
 
-                
-                System.out.println(autores.get(i));
-                
-              
-            }
-                
-                String textoEscrita = null;
-                TreeSet<String> nos = new TreeSet<String>();
-                nos = m.geraTreeSet(autores);
-                
-                
-                //Gerar lista de autores de cada trabalho
-                ArrayList<String> autoresPorArtigo = new ArrayList<String>();
-               // autoresPorArtigo = m.lerAutoresPorArtigo(arquivo);
-                
-                
-                
-                
-                textoEscrita = m.gerarNos(textoEscrita,nos);
-                
-                          
-            
-                //Com os nós gerados agora serão salvos no arquivo
-                //.csv escolhido pelo usuário
-                //salvando o arquivo
-                fc.setDialogTitle("Salvando o arquivo");
-                //resposta da janela
-                int resposta2 = fc.showOpenDialog(this);
+            //Com os nós gerados agora serão salvos no arquivo
+            //.csv escolhido pelo usuário
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
 
-                //verificando a resposta:
-                //Se o usuário clicar em OK
-                if(resposta2 == JFileChooser.APPROVE_OPTION){
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
 
-                    //Falta salvar o arquivo    
-                    
-                    
-                    File arqSalvo = fc.getSelectedFile();
-                    try {
-                        FileWriter fw = new FileWriter( arqSalvo );
-                        m.escreveCsv(textoEscrita, fw);
-                        JOptionPane.showMessageDialog(this, "Arquivo salvo");
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(this, "Erro"+ex);
-                    }
+                //Falta salvar o arquivo    
 
+
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
                 }
+
+            }
 
             
         }
@@ -213,7 +190,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
           // código para gerar arestas
-        //para autores (Scopus)
+        //para Arestas (Scopus)
         
         //tipos de arquivos a serem escolhidos:
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
@@ -239,14 +216,19 @@ public class Principal extends javax.swing.JFrame {
             
             File arquivo = fc.getSelectedFile();
         
-            ManipulaArquivo m = new ManipulaArquivo();
+            ManipuladorDeArquivos m = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
 
 
-            ArrayList<String> autores = new ArrayList<String>();
+            ArrayList<Autor> autores = new ArrayList<Autor>();
             ArrayList<Artigo> artigos = new ArrayList<Artigo>();
             
+            //lista de autores é igual a nós
             autores = m.lerAutores(arquivo);
             artigos = m.lerAutoresPorArtigo(arquivo);
+            
+            
+            
             
             //exibindo lista de autores (Scopus)
             //System.out.println("lista recebida");
@@ -259,16 +241,23 @@ public class Principal extends javax.swing.JFrame {
             }
                 
             String textoEscrita = null;
-            TreeSet<String> nos = new TreeSet<String>();
-            nos = m.geraTreeSet(autores);
-            textoEscrita = m.gerarArestas(textoEscrita,nos, artigos);
-                
-    
-                
-                
-                          
+            TreeSet<Autor> autoresTree = new TreeSet<Autor>();
+            autoresTree = m.geraTreeSetAutores(autores);
             
-                //Com os nós gerados agora serão salvos no arquivo
+            
+            textoEscrita = mg.gerarTextoArestas(textoEscrita,autoresTree, artigos);
+            
+             List<Aresta> lista = new ArrayList<Aresta>();
+             TreeSet<Aresta> arestasOrdenadas = new TreeSet<Aresta>();
+            
+            
+            lista = mg.gerarArestas(autoresTree, artigos);
+            arestasOrdenadas = mg.gerarArestasOrdenadas(lista);
+            
+            textoEscrita = mg.listarArestasOrdenadas(arestasOrdenadas, lista);
+            //textoEscrita = mg.listarArestasOrdenadas(, )
+            
+                //Com os nós e arestas gerados agora serão salvos no arquivo
                 //.csv escolhido pelo usuário
                 //salvando o arquivo
                 fc.setDialogTitle("Salvando o arquivo");
@@ -279,7 +268,7 @@ public class Principal extends javax.swing.JFrame {
                 //Se o usuário clicar em OK
                 if(resposta2 == JFileChooser.APPROVE_OPTION){
 
-                    //Falta salvar o arquivo    
+                    
                     
                     
                     File arqSalvo = fc.getSelectedFile();

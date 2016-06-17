@@ -7,6 +7,8 @@ import java.util.Objects;
  *
  * @author cristiano
  */
+
+//Implementa Comparable
 public class Aresta implements Comparable<Aresta>{
     
     
@@ -36,6 +38,10 @@ public class Aresta implements Comparable<Aresta>{
         this.setTipo(tipo);
         this.setWeight(weight);
     }
+    
+    // id+";"+idSource+";"+idTarget+";Undirected;1;"+nome1+" e "+nome2+"\n";
+    
+   
 
     @Override
     public String toString() {
@@ -70,23 +76,41 @@ public class Aresta implements Comparable<Aresta>{
     }
     
     public int compareTo(Aresta obj){
-        int igual = 1;
+        int igual = -1;
+        
+       String noOrigem = "";
+       String noDestino = ""; 
+       
+       String objNoOrigem = "";
+       String objNoDestino = "";
+       
+       if (obj!=null){
+            noOrigem=this.getOrigem().getLabel();
+            noDestino=this.getDestino().getLabel();
+            
+            objNoOrigem=obj.getOrigem().getLabel();
+            objNoDestino=obj.getDestino().getLabel();
+        }
         
         
         if(
                 
-                ((this.getOrigem().getLabel() == obj.getOrigem().getLabel())&&
-                (this.getDestino().getLabel() == obj.getDestino().getLabel()))
+                ((noOrigem.equals(objNoOrigem))&&
+                (noDestino.equals(objNoDestino)))
                 ||
-                ((this.getOrigem().getLabel() == obj.getDestino().getLabel())&&
-                (this.getDestino().getLabel() == obj.getOrigem().getLabel()))
+                ((noOrigem.equals(objNoDestino))&&
+                (noDestino.equals(objNoOrigem)))
                 
                 
            )
         {
 
               igual = 0;
+              System.out.println("-- compareTo ---Arestas iguais");
 
+        }else{
+            
+              System.out.println("-- compareTo ---Arestas diferentes");
         }
         
         return igual;

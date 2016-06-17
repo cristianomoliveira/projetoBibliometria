@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import model.domain.Artigo;
 import model.domain.Autor;
-import model.domain.ManipulaArquivo;
+import model.domain.ManipuladorDeArquivos;
 
 
 /**
@@ -35,7 +35,7 @@ public class principal {
         
         String nomeArquivo ="C:\\Desenvolvimento\\scopus.csv";
         File arquivo = new File(nomeArquivo);
-        ManipulaArquivo m = new ManipulaArquivo();
+        ManipuladorDeArquivos m = new ManipuladorDeArquivos();
         //Gerar lista de autores de cada trabalho
         ArrayList<Artigo> artigos = new ArrayList<Artigo>();
         ArrayList<Autor> autores = new ArrayList<Autor>();
