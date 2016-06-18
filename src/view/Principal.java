@@ -216,6 +216,30 @@ public class Principal extends javax.swing.JFrame {
             
             File arquivo = fc.getSelectedFile();
         
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+
+        
+        
+            //ArrayList<No> nos = new ArrayList<No>();
+            ArrayList<Autor> autores = new ArrayList<Autor>();
+            ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+
+
+            autores = ma.lerAutores(arquivo);
+            artigos = ma.lerAutoresPorArtigo(arquivo);
+            //lista de arestas únicas
+            ArrayList<Aresta> arestas = new ArrayList<Aresta>();
+            ArrayList<Aresta> arestasUnicas = new ArrayList<Aresta>();
+            arestas = mg.gerarArestasArrayList(autores, artigos);
+            arestasUnicas = mg.gerarArestasUnicas(arestas);
+     
+            
+            //para calcular a frequência de cada arestas
+            String textoEscrita = mg.listarArestas(arestas, arestasUnicas);
+            
+            /*
+            
             ManipuladorDeArquivos m = new ManipuladorDeArquivos();
             ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
 
@@ -253,8 +277,8 @@ public class Principal extends javax.swing.JFrame {
             
             lista = mg.gerarArestas(autoresTree, artigos);
             arestasOrdenadas = mg.gerarArestasOrdenadas(lista);
-            
-            textoEscrita = mg.listarArestasOrdenadas(arestasOrdenadas, lista);
+            */
+            //textoEscrita = mg.listarArestasOrdenadas(arestasOrdenadas, lista);
             //textoEscrita = mg.listarArestasOrdenadas(, )
             
                 //Com os nós e arestas gerados agora serão salvos no arquivo
@@ -274,7 +298,7 @@ public class Principal extends javax.swing.JFrame {
                     File arqSalvo = fc.getSelectedFile();
                     try {
                         FileWriter fw = new FileWriter( arqSalvo );
-                        m.escreveCsv(textoEscrita, fw);
+                        ma.escreveCsv(textoEscrita, fw);
                         JOptionPane.showMessageDialog(this, "Arquivo salvo");
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(this, "Erro"+ex);

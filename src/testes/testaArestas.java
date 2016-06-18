@@ -1,6 +1,7 @@
 package testes;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,30 +32,63 @@ public class testaArestas {
       
         
         
+        File arquivo = new File("C://Desenvolvimento//scopus3.csv");
         
-        List<Aresta> lista = new ArrayList<Aresta>();
         
-        lista.add(new Aresta(1,new No("Ribeiro P.C.C."),
-                new No("Scavarda A.J."),"Undirected",1));
-        lista.add(new Aresta(2,new No("Scavarda A.J."),
-                new No("Ribeiro P.C.C."),"Undirected",1));
-        lista.add(new Aresta(3,new No("Ribeiro P.C.C."),
-                new No("Scavarda A.J."),"Undirected",1));
-        lista.add(new Aresta(3,new No("Ribeiro P.C.C."),
-                new No("Oliveira C."),"Undirected",1));
+        ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+        ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+
         
+        
+        //ArrayList<No> nos = new ArrayList<No>();
+        ArrayList<Autor> autores = new ArrayList<Autor>();
+        ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+            
+        
+        autores = ma.lerAutores(arquivo);
+        artigos = ma.lerAutoresPorArtigo(arquivo);
+       
+        System.out.println("IMPRIMINDO AUTORES");
+        for(Autor a : autores){
+            System.out.println(a);
+        }
+        
+        
+        System.out.println("IMPRIMINDO ARTIGOS");
+        for(Artigo a : artigos){
+            System.out.println(a);
+        }
+        
+        
+        //nos = ma.lerArrayListNos(arquivo);
+        
+       
+        //System.out.println(mg.gerarTextoNosArrayList("", nos)); 
          
       
         //lista de arestas únicas
-        TreeSet<Aresta> arestasOrdenadas = new TreeSet<Aresta>();
+        ArrayList<Aresta> arestas = new ArrayList<Aresta>();
+        ArrayList<Aresta> arestasUnicas = new ArrayList<Aresta>();
       
      
       
         
-        ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
-        arestasOrdenadas = mg.gerarArestasOrdenadas(lista);
+        arestas = mg.gerarArestasArrayList(autores, artigos);
+        System.out.println("IMPRIMINDO ARESTAS(TOTAIS)");
+        for(Aresta a : arestas){
+            System.out.println(a);
+        }
+        
+        
+        
+        arestasUnicas = mg.gerarArestasUnicas(arestas);
+        System.out.println("IMPRIMINDO ARESTAS(ÚNICAS)");
+        for(Aresta a : arestasUnicas){
+            System.out.println(a);
+        }
 
-        String texto = mg.listarArestasOrdenadas(arestasOrdenadas, lista);
+        //para calcular a frequência de cada arestas
+        String texto = mg.listarArestas(arestas, arestasUnicas);
        
         System.out.println(texto); 
        

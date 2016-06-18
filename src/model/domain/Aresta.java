@@ -57,21 +57,36 @@ public class Aresta implements Comparable<Aresta>{
     public boolean equals(Aresta obj) {
        
         boolean igual = false;
-        if(
-                
-                ((this.getOrigem().getLabel() == obj.getOrigem().getLabel())&&
-                (this.getDestino().getLabel() == obj.getDestino().getLabel()))
+        String noOrigem = "";
+        String noDestino = ""; 
+       
+        String objNoOrigem = "";
+        String objNoDestino = "";
+        
+        
+        if (obj!=null){
+            noOrigem=this.getOrigem().getLabel();
+            noDestino=this.getDestino().getLabel();
+            
+            objNoOrigem=obj.getOrigem().getLabel();
+            objNoDestino=obj.getDestino().getLabel();
+        }
+        
+        
+        
+        
+        if( ((noOrigem.equals(objNoOrigem))&&(noDestino.equals(objNoDestino)))
                 ||
-                ((this.getOrigem().getLabel() == obj.getDestino().getLabel())&&
-                (this.getDestino().getLabel() == obj.getOrigem().getLabel()))
-                
-                
-           )
+             ((noOrigem.equals(objNoDestino))&&(noDestino.equals(objNoOrigem))) )
         {
 
               igual = true;
+              System.out.println("-- EQUALS ---Arestas iguais");
 
         }
+        
+        
+
         return igual;
     }
     

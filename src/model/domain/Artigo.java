@@ -72,6 +72,9 @@ public class Artigo {
         this.titulo = titulo;
     }
     
-    
+    @Override
+    public String toString() {
+        return "Artigo{" + "id=" + this.getId() + ", nome=" + this.getTitulo() + '}';
+    }
     
 }

@@ -268,6 +268,7 @@ public class ManipuladorDeArquivos {
             Autor autorFim = new Autor(dados[0].replace("\"", ""));
             //autor.setNome(dados[0].replace("\"", ""));
             artigo.inserirAutor(autorFim);
+            artigo.setTitulo(dados[1]);
             artigos.add(artigo);
             System.out.println("inserido meio "+autorFim.getNome());
             //System.out.println(autor.getNome());

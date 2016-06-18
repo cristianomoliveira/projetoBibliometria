@@ -57,6 +57,28 @@ public class ManipuladorDeGrafos {
     }
     
     
+    public int frequeciaArestas(ArrayList<Aresta> lista, Aresta aresta){
+        
+        int frequencia = 0;
+        
+        for(int i=0; i<lista.size(); i++){
+            if(aresta.equals(lista.get(i))){
+                
+               
+                frequencia++;
+                
+            }
+            else{
+               
+            }
+            
+        }
+        
+        return frequencia;
+    }
+    
+    
+    
     public int frequeciaArestas(List<Aresta> lista, Aresta aresta){
         
         int frequencia = 0;
@@ -98,6 +120,40 @@ public class ManipuladorDeGrafos {
         
         return frequencia;
     }
+    
+   
+    
+    
+    public String listarArestas(ArrayList<Aresta> arestas, ArrayList<Aresta> arestasUnicas){
+        
+        String textoSaida = "";
+        int cont =0;
+        
+        
+        textoSaida=textoSaida+"Id;Source;Target;Type;Weight;Autores"+"\n";
+        
+        
+        for (Aresta aresta:arestasUnicas){
+            
+            
+            cont = this.frequeciaArestas(arestas, aresta);
+            textoSaida=textoSaida+aresta.getId()+";"
+                    +aresta.getOrigem().getId()+";"
+                    +aresta.getDestino().getId()+";"
+                    +"Undirected;"
+                    +cont+";"
+                    +aresta.getOrigem().getLabel()+" - "+aresta.getDestino().getLabel()
+                    +"\n";
+                    
+                    //aresta.toString()+"frequencia: "+cont+"\n";
+            
+        }    
+        
+        return textoSaida;
+        
+    }
+    
+    
     
     
     
@@ -156,8 +212,55 @@ public class ManipuladorDeGrafos {
     
     
     
+    public boolean existeAresta(Aresta aresta, ArrayList<Aresta> arestas){
+        
+        boolean existe = false;
+        for(Aresta obj : arestas){
+            
+            if(aresta.equals(obj)){
+                existe = true;
+                break;
+                
+            }
+            
+        }
+        
+        
+        return existe;
+        
+    }
+   
     
-    
+     
+    //recebe um List de Arestas e retirna um TreeSet de Arestas
+    public ArrayList<Aresta> gerarArestasUnicas(ArrayList<Aresta> lista){
+        
+        Aresta a;
+        Iterator<Aresta> iteradorAresta = lista.iterator();
+        ArrayList<Aresta> arestas = new ArrayList<Aresta>();
+        while(iteradorAresta.hasNext()){
+          a=iteradorAresta.next();
+          if(!this.existeAresta(a, arestas)){      
+              arestas.add(a);
+              System.out.println("Aresta não existe, inserindo: ");
+              System.out.println("-------");
+              System.out.println(a.toString());
+              System.out.println("-------");
+          }else{
+              System.out.println("Existe arestas");
+              
+          }
+          
+          
+        }
+        
+        return arestas;
+
+        
+    }
+     
+     
+     
     //recebe um List de Arestas e retirna um TreeSet de Arestas
     public TreeSet<Aresta> gerarArestasOrdenadas(List<Aresta> lista){
         
@@ -257,6 +360,70 @@ public class ManipuladorDeGrafos {
     
     
     
+    public String gerarTextoArestas(String texto ,ArrayList<Autor> nos, 
+            ArrayList<Artigo> artigos){
+        
+    
+            ManipuladorDeArquivos m = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            int idSource = 0;
+            int idTarget = 0;
+            int id = 0;    
+            //listando autores por trabalho
+            texto = "Id;Source;Target;Type;Weight;Autores\n";
+            System.out.println("Artigos");
+            System.out.println("--------------------");
+            for(int i=0;i<=artigos.size()-1; i++){
+
+                System.out.println("-----------------");
+                System.out.println("Artigo: "+artigos.get(i).getId());
+
+                System.out.println("Autores: ");
+                System.out.println("-----------------");
+
+                //percorrendo os autores de cada artigo
+
+                int numAutores = artigos.get(i).getAutores().size();
+                System.out.println("número de autores "+numAutores);
+                for(int j=0;j<numAutores; j++){
+                    //Autor origem
+                    String nome1 = artigos.get(i).getAutores().get(j).getNome();
+
+                    int k = j+1;
+                    while(k<numAutores){
+                        id++;
+                        //id do autor de origem
+                        idSource = this.getIdNo(nome1, nos);
+
+                        //Autor de destino
+                        String nome2 = artigos.get(i).getAutores().get(k).getNome();
+                        //id do autor de destino
+                        idTarget = this.getIdNo(nome2, nos);
+                        System.out.println(nome1+";"+nome2);
+                        System.out.println(idSource+";"+idTarget);
+                        texto = texto + id+";"+idSource+";"+idTarget+";Undirected;1;"+nome1+" e "+nome2+"\n";
+                        k++;
+                    }
+
+
+                }
+
+
+
+               }
+        
+        
+        
+        return texto;
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     public String gerarTextoArestas(String texto ,TreeSet<Autor> nos, 
             ArrayList<Artigo> artigos){
         
@@ -316,6 +483,73 @@ public class ManipuladorDeGrafos {
     }
     
     
+    
+    
+    public ArrayList<Aresta> gerarArestasArrayList(ArrayList<Autor> nos,
+             ArrayList<Artigo> artigos){
+        
+            ArrayList<Aresta> lista = new ArrayList<Aresta>();
+            ManipuladorDeArquivos m = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            int idSource = 0;
+            int idTarget = 0;
+            int id = 0;    
+            //listando autores por trabalho
+            
+            
+            for(int i=0;i<=artigos.size()-1; i++){
+
+                
+                //percorrendo os autores de cada artigo
+
+                int numAutores = artigos.get(i).getAutores().size();
+               
+                for(int j=0;j<numAutores; j++){
+                    //Autor origem
+                    String nome1 = artigos.get(i).getAutores().get(j).getNome();
+
+                    int k = j+1;
+                    while(k<numAutores){
+                        id++;
+                        //id do autor de origem
+                        idSource = this.getIdNo(nome1, nos);
+
+                        //Autor de destino
+                        String nome2 = artigos.get(i).getAutores().get(k).getNome();
+                        //id do autor de destino
+                        idTarget = this.getIdNo(nome2, nos);
+                        //System.out.println(nome1+";"+nome2);
+                        //System.out.println(idSource+";"+idTarget);
+                        
+                        lista.add(new Aresta(id,
+                                new No(idSource,nome1),
+                                new No(idTarget,nome2),
+                                "Undirected",
+                                1
+                        ));
+
+                            
+                        //texto = texto + id+";"+idSource+";"+idTarget+";Undirected;1;"+nome1+" e "+nome2+"\n";
+                                
+                        //Aresta(int id, No origem, No destino, String tipo, float weight)        
+                                
+                                
+                        k++;
+                    }
+
+
+                }
+
+
+
+               }
+        
+        
+        
+        return lista;
+        
+    }
+
     
     
     
@@ -386,6 +620,30 @@ public class ManipuladorDeGrafos {
     
     
     
+     
+    private int getIdNo(String nome, ArrayList<Autor> nos) {
+        
+        int i =0;
+        Iterator<Autor> iterador = nos.iterator();
+        while(iterador.hasNext()){
+            i++;
+            //System.out.println("-------");
+            //System.out.println("Nome: "+nome);
+            //System.out.println("Nó: "+iterador.next());
+            //System.out.println("-------");
+            if(nome.equals(iterador.next().getNome()) ){
+
+                   // System.out.println("Nome: "+nome);
+                    return i;
+              }
+        }
+        
+        return i;
+        
+    }
+     
+     
+     
 
     private int getIdNo(String nome, TreeSet<Autor> nos) {
         
