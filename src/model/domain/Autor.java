@@ -51,7 +51,7 @@ public class Autor implements Comparable<Autor>{
         
         if (obj==null){
             igual=false;
-        }else if(this.getNome() == obj.getNome()){
+        }else if(this.getNome().equals(obj.getNome())){
 
             igual = true;
 

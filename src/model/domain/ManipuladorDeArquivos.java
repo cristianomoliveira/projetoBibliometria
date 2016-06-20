@@ -90,6 +90,27 @@ public class ManipuladorDeArquivos {
         
     }
     
+    
+    public boolean existeAutor(Autor autor, ArrayList<Autor> autores){
+        
+        boolean existe = false;
+        for(Autor obj : autores){
+            
+            if(autor.equals(obj)){
+                existe = true;
+                break;
+                
+            }
+            
+        }
+        
+        
+        return existe;
+        
+    }
+    
+    
+    
     public ArrayList<Autor> lerAutores(File arquivo){
         
         ArrayList<Autor> lista = new ArrayList<Autor>();
@@ -119,29 +140,61 @@ public class ManipuladorDeArquivos {
             linha = texto.get(i);
             dados = linha.split(", ");
             System.out.println(linha);
-            //Autor autor1 = new Autor();
+            Autor autor1 = new Autor(dados[0].replace("\"", ""));
             //autor1.setNome(dados[0].replace("\"", ""));
-            //System.out.println("Autor início: "+autor1);
+            System.out.println("Autor início: "+autor1);
             //lista.add(autor1);
-            lista.add(new Autor(dados[0].replace("\"", "")));
+            if (!this.existeAutor(autor1, lista)){
+                lista.add(autor1);
+                System.out.println("------------------");
+                System.out.println("INSERIDO ");
+                System.out.println("------------------");
+            }else{
+                System.out.println("------------------");
+                System.out.println("NÃO INSERIDO ");
+                System.out.println("------------------");
+            }
+            
+            
             j = 1;
             while(dados[j].contains("\"")==false){
-                //Autor autor2 = new Autor();
+                Autor autor2 = new Autor(dados[j]);
                 //autor2.setNome( dados[j]);
                 //lista.add(autor2);
-                //System.out.println("Autor meio: "+autor2);
+                System.out.println("Autor meio: "+autor2);
                 //lista.add(new Autor("Ribeiro P.C.C."));
-                lista.add(new Autor(dados[j]));
+                if (!this.existeAutor(autor2, lista)){
+                    lista.add(autor2);
+                    System.out.println("------------------");
+                    System.out.println("INSERIDO ");
+                    System.out.println("------------------");
+                }else{
+                System.out.println("------------------");
+                System.out.println("NÃO INSERIDO ");
+                System.out.println("------------------");
+            }
+               
                 j++;
             }
             linha = dados[j];
             dados = linha.split(",");
-            //Autor autor3 = new Autor();
+            Autor autor3 = new Autor(dados[0].replace("\"", ""));
             //autor3.setNome(dados[0].replace("\"", ""));
             //lista.add(autor3);
-            //System.out.println("Autor fim: "+autor3);
+            System.out.println("Autor fim: "+autor3);
             //lista.add(new Autor("Ribeiro P.C.C."));
-            lista.add(new Autor(dados[0].replace("\"", "")));
+            if (!this.existeAutor(autor3, lista)){
+                lista.add(autor3);
+                System.out.println("------------------");
+                System.out.println("INSERIDO ");
+                System.out.println("------------------");
+            }else{
+                System.out.println("------------------");
+                System.out.println("NÃO INSERIDO ");
+                System.out.println("------------------");
+            }
+            
+            
             
         }
         

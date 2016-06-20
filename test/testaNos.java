@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testes;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class testaNos {
     public static void main (String args[]){
     
       
-        File arquivo = new File("C://Desenvolvimento//scopus3.csv");
+        File arquivo = new File("C://Desenvolvimento//scopus.csv");
         
         
         ManipuladorDeArquivos ma = new ManipuladorDeArquivos();

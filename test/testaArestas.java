@@ -1,4 +1,4 @@
-package testes;
+
 
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class testaArestas {
       
         
         
-        File arquivo = new File("C://Desenvolvimento//scopus3.csv");
+        File arquivo = new File("C://Desenvolvimento//scopus.csv");
         
         
         ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
@@ -48,9 +48,13 @@ public class testaArestas {
         autores = ma.lerAutores(arquivo);
         artigos = ma.lerAutoresPorArtigo(arquivo);
        
-        System.out.println("IMPRIMINDO AUTORES");
+        System.out.println("-----------------");
+        System.out.println("IMPRIMINDO AUTORES -----------------");
+        System.out.println("-----------------");
+        int i = 0;
         for(Autor a : autores){
-            System.out.println(a);
+            i++;
+            System.out.println(i+" :"+a);
         }
         
         
@@ -75,16 +79,20 @@ public class testaArestas {
         
         arestas = mg.gerarArestasArrayList(autores, artigos);
         System.out.println("IMPRIMINDO ARESTAS(TOTAIS)");
+        i = 0;
         for(Aresta a : arestas){
-            System.out.println(a);
+            i++;
+            System.out.println(i+": "+a);
         }
         
         
         
         arestasUnicas = mg.gerarArestasUnicas(arestas);
+        i = 0;
         System.out.println("IMPRIMINDO ARESTAS(ÚNICAS)");
         for(Aresta a : arestasUnicas){
-            System.out.println(a);
+            i++;
+            System.out.println(i+": "+a);
         }
 
         //para calcular a frequência de cada arestas
