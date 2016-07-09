@@ -6,6 +6,8 @@ public class No implements Comparable<No>{
     
     private int id;
     private String label;
+    private String longitude;
+    private String latitude;
     
     
     public No(){
@@ -80,6 +82,22 @@ public class No implements Comparable<No>{
         
         return compara;
         
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
     
     

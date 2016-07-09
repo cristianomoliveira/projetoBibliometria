@@ -550,6 +550,132 @@ public class ManipuladorDeGrafos {
         
     }
 
+    public No getIdNoPais (String texto, ArrayList<No> nos){
+        
+        No n = new No();
+        for(No no:nos){
+            
+            if(no.getLabel().equals(texto)){
+                
+                n = no;
+                break;
+            }
+            
+        }
+        
+        
+        return n;
+    }    
+    
+    
+    public ArrayList<Aresta> gerarArestasDeNosPaises(ArrayList<No> nos,
+             ArrayList<Artigo> artigos){
+        
+            ArrayList<Aresta> subLista = new ArrayList<Aresta>();
+            //lista principal que deverá ser retornada pelo método
+            ArrayList<Aresta> lista = new ArrayList<Aresta>();
+            ManipuladorDeArquivos m = new ManipuladorDeArquivos();
+            
+            int idSource = 0;
+            int idTarget = 0;
+            int id = 0;    
+            String texto="";
+            //percorrendo a lista de artigos
+            for(int i=0;i<=artigos.size()-1; i++){
+                
+                
+                //percorrendo as filiações de cada artigo
+                int numFiliacoes = artigos.get(i).getFiliacoes().size();
+                System.out.println("ARTIGO: "+i+" com filiações: "+numFiliacoes);
+                for(int j=0;j<numFiliacoes; j++){
+                    //pegando o país da filiação
+                    String pais1 = m.getPaisDeFiliacao(artigos.get(i).getFiliacoes().get(j));
+                    int k = j+1;
+                    while(k<numFiliacoes){
+                        id++;
+                        //id do autor de origem
+                        idSource = this.getIdNoPais(pais1, nos).getId();
+                        String pais2 = m.getPaisDeFiliacao(artigos.get(i).getFiliacoes().get(k));
+                        //id do autor de destino
+                        idTarget = this.getIdNoPais(pais2, nos).getId();
+                        //System.out.println(nome1+";"+nome2);
+                        //System.out.println(idSource+";"+idTarget);
+                        //não pode ter mesma origem e destino:
+                        
+                        if (!(idSource==idTarget)){
+                            Aresta a = new Aresta(id,new No(idSource,pais1), new No(idTarget,pais2),"Undirected",1);
+                            if (!this.existeAresta(a, subLista)){
+                                subLista.add(a);
+                            }
+                            
+                            
+                            //System.out.println("Passou"+idSource+";"+idTarget);
+                            texto = texto + id+";"+idSource+";"+idTarget+";Undirected;1;"+pais1+" e "+pais2+"\n";
+                            
+                        }else{
+                            
+                            //System.out.println("não passou"+idSource+";"+idTarget); 
+                        }
+                       
+                        k++;
+                    }
+                      
+                      
+
+
+                }
+
+                //adicionar a sublista aqui
+                  System.out.println("----------------");
+                  System.out.println("SUBLISTA");
+
+                  for(Aresta a:subLista){
+
+                      System.out.println(a);
+                  }
+                  System.out.println("----------------");
+
+
+                  System.out.println("----------------");
+                  System.out.println("LISTA");
+
+                  for(Aresta a:lista){
+
+                      System.out.println(a);
+                  }
+                  System.out.println("----------------");
+
+                  this.addSubListaEmLista(subLista, lista);
+                  subLista = new ArrayList<Aresta>();
+
+               }
+        
+        
+        System.out.println("ARESTAS");
+        for(Aresta a:lista){
+
+            System.out.println(a);
+        }
+            
+        return lista;
+        
+    }
+    
+    
+    public ArrayList<Aresta> addSubListaEmLista(ArrayList<Aresta> subLista,
+            ArrayList<Aresta> lista){
+        
+        for(Aresta a: subLista){
+            
+            lista.add(a);
+        }
+        
+        return lista;
+        
+    }
+
+    
+    
     
     
     
@@ -619,7 +745,7 @@ public class ManipuladorDeGrafos {
     }
     
     
-    
+
      
     private int getIdNo(String nome, ArrayList<Autor> nos) {
         
@@ -707,21 +833,47 @@ public class ManipuladorDeGrafos {
         
         String nome = "";
         //System.out.println("Inserindo Autores na lista Ordenada:");
-        textoEscrita = "Id;Label;Nome"+"\n";
-        Iterator<No> iterador = nos.iterator();
+        textoEscrita = "Id;Label"+"\n";
+        //Iterator<No> iterador = nos.iterator();
         int id = 0;
         System.out.println("Escrevendo os nós (texto)");
         System.out.println("Qtde de Nós"+nos.size());
+        //System.out.println("Id;Label;Nome");
+        
+        for(No no : nos){
+            id++;
+            nome =no.getLabel();
+            //System.out.println(id+";"+nome+"");
+            //System.out.println("teste "+id+";"+nome+";"+nome);
+            textoEscrita = textoEscrita + id+";"+nome+"\n";
+        }
+        /*
         while(iterador.hasNext()){
-
+            
             id++;
             nome =iterador.next().getLabel();
-            System.out.println(nome);
+            System.out.println(id);
+            System.out.println("teste "+id+";"+nome+";"+nome);
             textoEscrita = textoEscrita + id+";"+nome+";"+nome+"\n";
+            
 
         }
+*/
         return textoEscrita;
     }
     
+    
+    
+    public ArrayList<No> setCoordenadasFiliacoes(ArrayList<No> nos){
+        
+        
+        for (No no : nos){
+            
+            //DistanciaWS d = new Dis
+        }
+        
+        return nos;
+        
+    }
     
 }

@@ -149,8 +149,8 @@ public class Principal extends javax.swing.JFrame {
             ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
             ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
             ArrayList<Autor> lista = new ArrayList<Autor>();
-
             ArrayList<No> nos = new ArrayList<No>();
+            System.out.println("Gerando nós");
             nos = ma.lerArrayListNos(arquivo);
 
 

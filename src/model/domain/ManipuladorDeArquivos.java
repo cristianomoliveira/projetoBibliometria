@@ -1,8 +1,10 @@
 
 package model.domain;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +61,31 @@ public class ManipuladorDeArquivos {
     }
     
     
+    
+    
+    public ArrayList<String> lerFiliacoes(String arq) throws FileNotFoundException{
+        
+        
+        Scanner scanner = new Scanner(new FileReader(arq)).useDelimiter("\\||\\n");
+        ArrayList<String> linhas = new ArrayList<String>();
+        int i = 0;
+     
+            
+        while (scanner.hasNext()) {
+           
+            linhas.add(i, scanner.next());
+            i++;
+            //System.out.println("Linha: "+i);
+        }
+ 
+   
+        
+        return linhas;
+    }
+        
+        
+        
+    
     public ArrayList<String> lerCsv(File csv){
         
         ArrayList<String> linhas = new ArrayList<String>();
@@ -73,7 +100,7 @@ public class ManipuladorDeArquivos {
                 
                 linhas.add(i, leitor.nextLine());
                 i++;
-                //System.out.println("Linha: "+i);
+                System.out.println("Linha: "+i);
                 
             }
             
@@ -334,6 +361,58 @@ public class ManipuladorDeArquivos {
     }
     
     
+    public ArrayList<Artigo> lerFiliacoesPorArtigo(String arquivo) throws FileNotFoundException {
+        
+        
+        
+        ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+        
+        ArrayList<String> texto = new ArrayList<String>();
+        texto = this.lerFiliacoes(arquivo);
+        
+                //Gerar arquivo de saída
+        String linha = "";
+        String[] dados = null;
+        int j = 0;
+        System.out.println("ADICIONANDO FILIAÇÕES NOS ARTIGOS");
+        //System.out.println("tamanho do texto: "+texto.size());
+        //manipulando a String
+        for(int i=1;i<=texto.size()-1; i++){
+            linha = texto.get(i);
+            dados = linha.split("; ");
+            System.out.println(linha);
+            System.out.println("-----------------------");
+            System.out.println(dados[0]);
+            
+            //inserindo a filiação
+            Artigo artigo = new Artigo();
+            artigo.setId(i);
+            System.out.println("INSERIDO:"+dados[0]);
+            artigo.inserirFiliacao(dados[0]);
+            
+            j = 1;
+            while(j < dados.length){
+                System.out.println("INSERIDO"+dados[j]);
+                artigo.inserirFiliacao(dados[j]);
+                //System.out.println(dados[j]);
+                j++;
+            }
+            System.out.println("----------------------- "+"\n");
+            
+            artigos.add(artigo);
+            
+          
+            
+        }
+        
+        return artigos;
+        
+    }
+    
+    
+    
+    
+    
     
     
     
@@ -469,7 +548,7 @@ public class ManipuladorDeArquivos {
         
     }
     
-  
+  //Retorna uma lista do nós onde os labels possuem os nomes dos autores
     public ArrayList<No> lerArrayListNos(File arquivo) {
         
         
@@ -480,8 +559,8 @@ public class ManipuladorDeArquivos {
        
         
         //Lendo Arquivo de Entrada
-        System.out.println("Lendo os autores");
-        System.out.println("-------------------");
+        //System.out.println("Lendo os autores");
+        //System.out.println("-------------------");
         
         ArrayList<String> texto = new ArrayList<String>();
         texto = this.lerCsv(arquivo);
@@ -496,6 +575,7 @@ public class ManipuladorDeArquivos {
             linha = texto.get(i);
             dados = linha.split(", ");
             System.out.println(linha);
+            //System.out.println("------------------");
             
             nos.add(dados[0].replace("\"", ""));
             
@@ -563,5 +643,363 @@ public class ManipuladorDeArquivos {
     }
     
     
+
+// retorna uma lista de nós, onde os labels possuem as filiações dos 
+    //Artigos
+    public ArrayList<No> lerFiliacoesDeFiliacao(String filiacao) {
+        
+        
+        
+        ArrayList<No> nos = new ArrayList<No>();
+        ArrayList<No> lista = new ArrayList<No>();
+        ManipuladorDeGrafos m = new ManipuladorDeGrafos();
+       
+        
+        //Lendo Arquivo de Entrada
+        System.out.println("Lendo os locais");
+        //System.out.println("-------------------");
+        
+        ArrayList<String> texto = new ArrayList<String>();
+        String[] filiacoes = filiacao.split("; ");
+        
+        for(int i=0;i<=filiacoes.length-1; i++){
+            System.out.println("-----------------------");
+            System.out.println("AFILIAÇÕES:");
+            System.out.println(filiacoes[i]);
+            
+            nos.add(new No(filiacoes[i]));
+          
+           System.out.println("----------------------- "+"\n");
+            
+        }
+
+        return nos;
+    }    
+    // retorna uma lista de nós, onde os labels possuem as filiações dos 
+    //Artigos
+    public ArrayList<No> lerArrayListNosFiliacoes(String arquivo) throws FileNotFoundException {
+        
+        
+        
+        ArrayList<String> nos = new ArrayList<String>();
+        ArrayList<No> lista = new ArrayList<No>();
+        ManipuladorDeGrafos m = new ManipuladorDeGrafos();
+       
+        
+        //Lendo Arquivo de Entrada
+        System.out.println("Lendo os locais");
+        //System.out.println("-------------------");
+        
+        ArrayList<String> texto = new ArrayList<String>();
+        texto = this.lerFiliacoes(arquivo);
+        
+        //Gerar arquivo de saída
+        String linha = "";
+        String[] dados = null;
+        int j = 0;
+        //System.out.println("tamanho do texto: "+texto.size());
+        //manipulando a String
+        for(int i=1;i<=texto.size()-1; i++){
+            linha = texto.get(i);
+            dados = linha.split("; ");
+            System.out.println(linha);
+            System.out.println("-----------------------");
+            System.out.println("AFILIAÇÕES:");
+            System.out.println(dados[0]);
+            
+            
+            nos.add(dados[0]);
+          
+            
+            j = 1;
+            while(j < dados.length){
+                
+                nos.add(dados[j]);
+                System.out.println(dados[j]);
+                j++;
+            }
+            System.out.println("----------------------- "+"\n");
+            
+            
+            
+          
+            
+        }
+              
+        
+        //preenchendo a lista
+        
+        //System.out.println("Inserindo nós em ");
+        for(String nome : nos){
+            
+           No n = new No(nome);
+           //System.out.println("Nó para inserir");
+           //System.out.println(n);
+           if (!m.existeNo(n, lista)){
+               
+               lista.add(n);
+               //System.out.println("Nó inserido: "+ n);
+           } else{
+               
+               //System.out.println("Já existe");
+               //System.out.println(n);
+           }
+           
+            
+        }
+        
+       
+        /*
+        
+        System.out.println("LISTANDO: ");
+        for(No no : lista){
+            
+            
+            System.out.println(no);
+            
+        }
+        System.out.println("----------------");
+        
+        */
+        
+        return lista;
+    
+        
+        
+    }
+    
+  
+    
+    
+    
+     public ArrayList<No> lerArrayScopusListNosFiliacoes(File arquivo) throws FileNotFoundException {
+        
+        
+        
+        ArrayList<String> nos = new ArrayList<String>();
+        ArrayList<No> lista = new ArrayList<No>();
+        ManipuladorDeGrafos m = new ManipuladorDeGrafos();
+       
+        
+        //Lendo Arquivo de Entrada
+        System.out.println("Lendo os locais");
+        System.out.println("-------------------");
+        
+        ArrayList<String> texto = new ArrayList<String>();
+        texto = this.lerCsv(arquivo);
+        
+        //Gerar arquivo de saída
+        String linha = "";
+        String[] dados = null;
+        int j = 0;
+        //System.out.println("tamanho do texto: "+texto.size());
+        //manipulando a String
+        for(int i=1;i<=texto.size()-1; i++){
+            linha = texto.get(i);
+            dados = linha.split("\",");
+            System.out.println(linha);
+            System.out.println("-----------------------");
+            System.out.println(dados[6]);
+            System.out.println("-----------------------");
+            
+            //nos.add(dados[0]);
+           // System.out.println(dados[0]);
+          /*  
+            j = 1;
+            while(j < dados.length){
+                
+                nos.add(dados[j]);
+                //System.out.println(dados[j]);
+                j++;
+            }*/
+           // System.out.println("-----------------------");
+            
+            
+            
+            //linha = dados[j];
+            //dados = linha.split(",");
+            
+            //nos.add(dados[0].replace("\"", ""));
+            
+        }
+        /*
+        System.out.println("IMPRIMINDO AUTORES");
+         for(String nome : nos){
+            
+           System.out.println("Nó inserido: "+ nome);
+            
+           
+            
+        }
+        */
+        
+        
+        //preenchendo a lista
+        
+        for(String nome : nos){
+            
+           No n = new No(nome);
+           //System.out.println("Nó para inserir");
+           //System.out.println(n);
+           if (!m.existeNo(n, lista)){
+               lista.add(n);
+               //System.out.println("Nó inserido: "+ n);
+           } else{
+               
+               //System.out.println("Já existe");
+           }
+           
+            
+        }
+        
+       
+        /*
+        
+        System.out.println("LISTANDO: ");
+        for(No no : lista){
+            
+            
+            System.out.println(no);
+            
+        }
+        System.out.println("----------------");
+        
+        */
+        
+        return lista;
+    
+        
+        
+    }
+     
+    
+     
+     public boolean existeString(String texto, ArrayList<String> lista){
+         
+         
+         boolean existe = false;
+         
+         for(String t:lista){
+             
+             if (texto.equals(t)){
+                 existe = true;
+                 break;
+             }
+             
+         }
+         
+         return existe;
+                 
+     }
+     
+   
+     
+    public ArrayList<No> getPaisesUnicos(ArrayList<No> nosPaises){
+        
+        ArrayList<No> nosUnicos = new ArrayList<No>();
+        ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+        int id = 0;
+        for (No no : nosPaises){
+
+            if(!mg.existeNo(no, nosUnicos)){
+                id++;
+                nosUnicos.add(new No(id,no.getLabel()));
+            
+            }
+        
+        
+        }        
+        
+        return nosUnicos;
+        
+        
+    } 
+     
+    
+    public String getPaisDeFiliacao( String filiacao) {
+        
+        
+        ArrayList<No> nos = new ArrayList<No>();
+       
+        ArrayList<No> nosPaises = new ArrayList<No>();
+                
+        String pais = "";
+        String[] arrayFiliacao = null;
+        arrayFiliacao = filiacao.split(", ");
+        pais = this.formataPais(arrayFiliacao[arrayFiliacao.length -1]);
+        
+        
+        return pais;
+        
+    }
+    
+    
+    public ArrayList<No> getPaises( String arquivo) throws FileNotFoundException{
+        
+        
+        ArrayList<No> nos = new ArrayList<No>();
+       
+        ArrayList<No> nosPaises = new ArrayList<No>();
+                
+        nos = this.lerArrayListNosFiliacoes(arquivo);
+        int id = 0;
+        String endereco = "";
+        String pais = "";
+        String texto = "id;Latitude;Longitude;Label"+"\n";
+        String[] arrayEndereco = null;
+
+        for (No no : nos){
+             //No n = new No();
+             id++;
+             endereco = no.getLabel();
+             arrayEndereco = no.getLabel().split(", ");
+
+             pais = this.formataPais(arrayEndereco[arrayEndereco.length -1]);
+             
+            
+            //pais = pais.matches("[a-zA-Z{3,3}]+");
+             //System.out.println(id+"; ; ;"+pais);
+
+             texto = texto +id+"; ; ;"+pais+"\n";
+             //System.out.println(endereco);
+             //System.out.println(id+";"+pais);
+             
+             nosPaises.add(new No(id,pais));
+
+
+         }
+   
+        System.out.println(texto);
+        
+        System.out.println("LISTA NOVA");
+        
+        for(No n:nosPaises){
+            
+            System.out.println(n.getLabel());
+        }
+        
+        return nosPaises;
+        
+    } 
+    
+    public String formataPais (String pais){
+        
+        
+        //usando expressão regular
+            String paisTemp = "";     
+            for(int i=0;i<pais.length();i++){ 
+                char ch = pais.charAt(i); 
+                String temp = Character.toString(ch);
+                boolean teste = temp.matches("[a-zA-Z ]");
+                if(teste){
+                            paisTemp = paisTemp + temp;  
+                          }
+            }
+            
+        
+        
+        
+        return paisTemp;
+    }
     
 }

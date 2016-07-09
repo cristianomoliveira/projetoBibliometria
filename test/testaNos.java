@@ -26,7 +26,7 @@ public class testaNos {
     public static void main (String args[]){
     
       
-        File arquivo = new File("C://Desenvolvimento//scopus.csv");
+        File arquivo = new File("C://testes//scopus(com 28).csv");
         
         
         ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
@@ -41,9 +41,17 @@ public class testaNos {
         
         ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
         
-        nos = ma.lerArrayListNos(arquivo);
+        //nos = ma.lerArrayListNos(arquivo);
         
-       
+        nos.add(new No("Brazil"));
+        No no = new No("Brazil");
+        
+        if(!mg.existeNo(no, nos)){
+            
+            nos.add(no);
+        }else{
+            System.out.println("existe");
+        }
         System.out.println(mg.gerarTextoNosArrayList("", nos)); 
        
         

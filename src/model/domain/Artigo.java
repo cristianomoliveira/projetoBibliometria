@@ -15,6 +15,7 @@ public class Artigo {
     private String titulo;
     //a lista de autores é ordenada
     private ArrayList<Autor> autores = new ArrayList<Autor>();
+    private ArrayList<String> filiacoes = new ArrayList<String>();
 
     
     public Artigo (){
@@ -27,6 +28,22 @@ public class Artigo {
         this.setId(id);
     }
 
+    
+    public void inserirFiliacao(String f){
+        
+        //System.out.println("Inserindo "+f);
+        this.filiacoes.add(f);
+        
+        //System.out.println("A lista tem "+this.filiacoes.size());
+        for (int i=0; i<this.filiacoes.size(); i++){
+         
+         
+         //System.out.println(filiacoes.get(i));
+     }
+        
+       
+    }
+    
     
 
     public void inserirAutor(Autor autor){
@@ -47,6 +64,13 @@ public class Artigo {
     public ArrayList<Autor> getAutores(){
         
         return this.autores;
+        
+    }
+    
+    
+    public ArrayList<String> getFiliacoes(){
+        
+        return this.filiacoes;
         
     }
     
