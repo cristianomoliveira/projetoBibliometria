@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/test/TesteFiliacoes.java</file>
+            <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/src/model/domain/Artigo.java</file>
             <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/src/model/domain/ManipuladorDeArquivos.java</file>
+            <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/src/testes/TesteFiliacoes.java</file>
+            <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/src/testes/TesteFiliacoesArestas.java</file>
+            <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/src/view/Principal.java</file>
+            <file>file:/C:/Desenvolvimento/Java/manipulaArquivos/projetoBibliometria/src/testes/TesteExpressaoRegular.java</file>
         </group>
     </open-files>
 </project-private>

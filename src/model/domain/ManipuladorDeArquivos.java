@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -63,24 +64,54 @@ public class ManipuladorDeArquivos {
     
     
     
-    public ArrayList<String> lerFiliacoes(String arq) throws FileNotFoundException{
+    public ArrayList<String> lerFiliacoes(File arquivo) throws FileNotFoundException{
+        
+       
+        
+        ArrayList<String> filiacoes = new ArrayList<String>();
+       
+       
+        
+        //Lendo Arquivo de Entrada
+        System.out.println("Lendo os locais");
+        //System.out.println("-------------------");
         
         
-        Scanner scanner = new Scanner(new FileReader(arq)).useDelimiter("\\||\\n");
-        ArrayList<String> linhas = new ArrayList<String>();
-        int i = 0;
-     
+        
+        ArrayList<String[]> texto = new ArrayList<String[]>();
+        
+        ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+        texto = this.getLinhasScopus(arquivo);
+                
+        //Gerar arquivo de saída
+        String linha = "";
+        String[] dados = null;
+        int j = 0;
+        //System.out.println("tamanho do texto: "+texto.size());
+        //manipulando a String
+        for(int i=1;i<=texto.size()-1; i++){
+            linha = texto.get(i)[13];
+            dados = linha.split("; ");
+            //System.out.println(linha);
+            System.out.println("-----------------------");
+            System.out.println("-AFILIAÇÕES:");
+            System.out.println(texto.get(i)[13]);
+            filiacoes.add(texto.get(i)[13]);
             
-        while (scanner.hasNext()) {
-           
-            linhas.add(i, scanner.next());
-            i++;
-            //System.out.println("Linha: "+i);
         }
+        
+      for(String f:filiacoes){
+          
+          System.out.println("--filiação: "+f);
+      }
  
    
         
-        return linhas;
+        return filiacoes;
+        
+        
+        
+        
     }
         
         
@@ -100,7 +131,7 @@ public class ManipuladorDeArquivos {
                 
                 linhas.add(i, leitor.nextLine());
                 i++;
-                System.out.println("Linha: "+i);
+                //System.out.println("Linha: "+i);
                 
             }
             
@@ -298,7 +329,52 @@ public class ManipuladorDeArquivos {
         
     }
 
+    
+    public ArrayList<Autor> getAutores (String autores){
+        
+        ArrayList<Autor> listaAutores = new ArrayList<Autor>();
+        
+        
+        String[] nomes = null;
+        nomes = autores.split(", ");
+        for(String nome:nomes){
+            listaAutores.add(new Autor(nome.replace("\"", "")));
 
+        }
+        
+           
+        
+        return listaAutores;
+        
+    }
+    
+    
+    public ArrayList<Artigo> getArtigosScopus(File arquivo){
+        
+        ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+        ArrayList<Autor> autores = new ArrayList<Autor>();
+        ArrayList<String []> texto = this.getLinhasScopus(arquivo);
+        for(int i=0;i<=texto.size()-1; i++){
+            Artigo a = new Artigo();
+            
+            //adiconando campos ao Artigo
+            a.setTitulo(texto.get(i)[1]);
+            autores = this.getAutores(texto.get(i)[0]); 
+            a.setAutores(autores);
+            
+            if(!texto.get(i)[10].equals("")){
+                a.setnCitacoes(Integer.parseInt(texto.get(i)[10]));
+            }
+            
+            
+            //adicionando o artigo à lista
+            artigos.add(a);
+        }
+        
+        
+        return artigos;
+        
+    }
 
     public ArrayList<Artigo> lerAutoresPorArtigo(File arquivo) {
         
@@ -361,7 +437,7 @@ public class ManipuladorDeArquivos {
     }
     
     
-    public ArrayList<Artigo> lerFiliacoesPorArtigo(String arquivo) throws FileNotFoundException {
+    public ArrayList<Artigo> lerFiliacoesPorArtigo(File arquivo) throws FileNotFoundException {
         
         
         
@@ -370,14 +446,19 @@ public class ManipuladorDeArquivos {
         ArrayList<String> texto = new ArrayList<String>();
         texto = this.lerFiliacoes(arquivo);
         
-                //Gerar arquivo de saída
+         //Gerar arquivo de saída
+         System.out.println("filiações recebidas");
+         for(String f: texto){
+             System.out.println(f);
+         }
         String linha = "";
         String[] dados = null;
         int j = 0;
-        System.out.println("ADICIONANDO FILIAÇÕES NOS ARTIGOS");
+        System.out.println("---ADICIONANDO FILIAÇÕES NOS ARTIGOS");
+        System.out.println("");
         //System.out.println("tamanho do texto: "+texto.size());
         //manipulando a String
-        for(int i=1;i<=texto.size()-1; i++){
+        for(int i=0;i<=texto.size()-1; i++){
             linha = texto.get(i);
             dados = linha.split("; ");
             System.out.println(linha);
@@ -548,8 +629,37 @@ public class ManipuladorDeArquivos {
         
     }
     
+    public ArrayList <String[]> getLinhasScopus (File arquivo){
+        
+        ArrayList<String[]> linhas = new ArrayList<String[]>();
+        
+        
+        ArrayList<String> texto = new ArrayList<String>();
+        texto = this.lerCsv(arquivo);
+        
+        //Gerar arquivo de saída
+        String linha = "";
+        
+        int j = 0;
+        
+        //manipulando a String
+        for(int i=1;i<=texto.size()-1; i++){
+            linha = texto.get(i);
+            
+            String s = linha;
+            String[] splitted = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+            linhas.add(splitted);
+            
+        }
+        
+        return linhas;
+    }
+    
+    
   //Retorna uma lista do nós onde os labels possuem os nomes dos autores
     public ArrayList<No> lerArrayListNos(File arquivo) {
+        
+        
         
         
         
@@ -573,6 +683,14 @@ public class ManipuladorDeArquivos {
         //manipulando a String
         for(int i=1;i<=texto.size()-1; i++){
             linha = texto.get(i);
+            
+           // String s = linha;
+           // String[] splitted = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+           // System.out.println("texto com split"+splitted[13]);
+            //String [] teste = Arrays.toString(splitted);
+            //System.out.println("texto com split"+Arrays.toString(splitted));
+            
+            
             dados = linha.split(", ");
             System.out.println(linha);
             //System.out.println("------------------");
@@ -592,16 +710,7 @@ public class ManipuladorDeArquivos {
             nos.add(dados[0].replace("\"", ""));
             
         }
-        /*
-        System.out.println("IMPRIMINDO AUTORES");
-         for(String nome : nos){
-            
-           System.out.println("Nó inserido: "+ nome);
-            
-           
-            
-        }
-        */
+        
         
         
         //preenchendo a lista
@@ -677,7 +786,7 @@ public class ManipuladorDeArquivos {
     }    
     // retorna uma lista de nós, onde os labels possuem as filiações dos 
     //Artigos
-    public ArrayList<No> lerArrayListNosFiliacoes(String arquivo) throws FileNotFoundException {
+    public ArrayList<No> lerArrayListNosFiliacoes(File arquivo) throws FileNotFoundException {
         
         
         
@@ -690,8 +799,19 @@ public class ManipuladorDeArquivos {
         System.out.println("Lendo os locais");
         //System.out.println("-------------------");
         
-        ArrayList<String> texto = new ArrayList<String>();
-        texto = this.lerFiliacoes(arquivo);
+        
+        
+        ArrayList<String[]> texto = new ArrayList<String[]>();
+        
+        ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+        texto = this.getLinhasScopus(arquivo);
+        
+        
+        
+        
+        
+        //ArrayList<String> texto = new ArrayList<String>();
+        //texto = this.lerFiliacoes(arquivo);
         
         //Gerar arquivo de saída
         String linha = "";
@@ -700,18 +820,18 @@ public class ManipuladorDeArquivos {
         //System.out.println("tamanho do texto: "+texto.size());
         //manipulando a String
         for(int i=1;i<=texto.size()-1; i++){
-            linha = texto.get(i);
+            linha = texto.get(i)[13];
             dados = linha.split("; ");
-            System.out.println(linha);
+            //System.out.println(linha);
             System.out.println("-----------------------");
             System.out.println("AFILIAÇÕES:");
-            System.out.println(dados[0]);
+            System.out.println(texto.get(i)[13]);
             
             
-            nos.add(dados[0]);
+            //nos.add(texto.get(i)[13]);
           
             
-            j = 1;
+            j = 0;
             while(j < dados.length){
                 
                 nos.add(dados[j]);
@@ -749,18 +869,7 @@ public class ManipuladorDeArquivos {
         }
         
        
-        /*
-        
-        System.out.println("LISTANDO: ");
-        for(No no : lista){
-            
-            
-            System.out.println(no);
-            
-        }
-        System.out.println("----------------");
-        
-        */
+      
         
         return lista;
     
@@ -802,39 +911,10 @@ public class ManipuladorDeArquivos {
             System.out.println(dados[6]);
             System.out.println("-----------------------");
             
-            //nos.add(dados[0]);
-           // System.out.println(dados[0]);
-          /*  
-            j = 1;
-            while(j < dados.length){
-                
-                nos.add(dados[j]);
-                //System.out.println(dados[j]);
-                j++;
-            }*/
-           // System.out.println("-----------------------");
-            
-            
-            
-            //linha = dados[j];
-            //dados = linha.split(",");
-            
-            //nos.add(dados[0].replace("\"", ""));
+        
             
         }
-        /*
-        System.out.println("IMPRIMINDO AUTORES");
-         for(String nome : nos){
-            
-           System.out.println("Nó inserido: "+ nome);
-            
-           
-            
-        }
-        */
-        
-        
-        //preenchendo a lista
+       
         
         for(String nome : nos){
             
@@ -853,18 +933,7 @@ public class ManipuladorDeArquivos {
         }
         
        
-        /*
-        
-        System.out.println("LISTANDO: ");
-        for(No no : lista){
-            
-            
-            System.out.println(no);
-            
-        }
-        System.out.println("----------------");
-        
-        */
+       
         
         return lista;
     
@@ -934,7 +1003,7 @@ public class ManipuladorDeArquivos {
     }
     
     
-    public ArrayList<No> getPaises( String arquivo) throws FileNotFoundException{
+    public ArrayList<No> getPaises( File arquivo) throws FileNotFoundException{
         
         
         ArrayList<No> nos = new ArrayList<No>();
@@ -956,13 +1025,9 @@ public class ManipuladorDeArquivos {
 
              pais = this.formataPais(arrayEndereco[arrayEndereco.length -1]);
              
-            
-            //pais = pais.matches("[a-zA-Z{3,3}]+");
-             //System.out.println(id+"; ; ;"+pais);
+         
 
              texto = texto +id+"; ; ;"+pais+"\n";
-             //System.out.println(endereco);
-             //System.out.println(id+";"+pais);
              
              nosPaises.add(new No(id,pais));
 
@@ -1000,6 +1065,52 @@ public class ManipuladorDeArquivos {
         
         
         return paisTemp;
+    }
+    
+    
+    public ArrayList<Autor> lerAutoresDeArtigos(ArrayList<Artigo> artigos){
+        
+        ArrayList<Autor> autores = new ArrayList<Autor>();
+        ArrayList<Autor> autoresTemp = new ArrayList<Autor>();
+        
+        for(Artigo artigo:artigos){
+            autoresTemp = artigo.getAutores();
+            for (Autor autor:autoresTemp){
+                autores.add(autor);
+            }
+        }
+        
+        return autores;
+        
+    }
+    
+    public ArrayList<No> autoresEmNos(ArrayList<Autor> autores){
+        
+        ArrayList<No> nos = new ArrayList<No> ();
+        ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+        int id = 0;
+        
+        for (Autor autor:autores){
+            No no = new No(autor.getNome());
+            if(!mg.existeNo(no, nos)){
+                id++;
+                nos.add(no);
+            
+            }
+        }
+        
+        return nos;
+    }
+    
+    
+    public ArrayList<Artigo> unirListaArtigos(ArrayList<Artigo> lista,
+            ArrayList<Artigo> subLista){
+        
+        for(Artigo a:subLista){
+            lista.add(a);
+        }
+        
+        return lista;
     }
     
 }

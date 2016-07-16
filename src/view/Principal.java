@@ -2,6 +2,7 @@
 package view;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,8 +46,18 @@ public class Principal extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -68,24 +79,64 @@ public class Principal extends javax.swing.JFrame {
 
         editMenu.setMnemonic('e');
         editMenu.setText("Grafos");
+        editMenu.add(jSeparator1);
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Gerar Nós (Autores)");
-        cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenu1.setText("Rede Co-autoria");
+
+        jMenuItem4.setText("Gerar Nós");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cutMenuItemActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        editMenu.add(cutMenuItem);
+        jMenu1.add(jMenuItem4);
 
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Gerar Arestas");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem5.setText("Gerar Arestas");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteMenuItemActionPerformed(evt);
+                jMenuItem5ActionPerformed(evt);
             }
         });
-        editMenu.add(deleteMenuItem);
+        jMenu1.add(jMenuItem5);
+
+        editMenu.add(jMenu1);
+        editMenu.add(jSeparator2);
+
+        jMenu2.setText("Rede Geográfica");
+
+        jMenuItem6.setText("Gerar Nós");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
+
+        jMenuItem7.setText("Gerar Arestas");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem7);
+
+        editMenu.add(jMenu2);
+        editMenu.add(jSeparator3);
+
+        jMenu3.setText("Rede de Citações");
+
+        jMenuItem8.setText("Gerar Nós");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
+
+        jMenuItem9.setText("Gerar Arestas");
+        jMenu3.add(jMenuItem9);
+
+        editMenu.add(jMenu3);
 
         menuBar.add(editMenu);
 
@@ -118,41 +169,277 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
-  //código para gerar nós
-
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // Código para gerar arestas dos países (Filiações)
 
         //tipos de arquivos a serem escolhidos:
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
-        
+
         //Usando o JfileChooser
         JFileChooser fc = new JFileChooser();
-        
+
         //adicionando tipos de arquivos que podem ser escolhidos
         fc.setFileFilter(filtro);
-        
+
         //título da tela
         fc.setDialogTitle("Escolha o arquivo ...");
-        
+
         //escolhendo somente arquivos
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-       
+
         //resposta da janela
         int resposta = fc.showOpenDialog(this);
-        
+
         //verificando a resposta:
         //Se o usuário clicar em OK
         if(resposta == JFileChooser.APPROVE_OPTION){
-            
+
             File arquivo = fc.getSelectedFile();
-        
+            //pegar o nome do arquivo
             ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
             ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
-            ArrayList<Autor> lista = new ArrayList<Autor>();
+
+            ArrayList<No> nosPaises = null;
+            try {
+                nosPaises = ma.getPaises(arquivo);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            ArrayList<No> nosUnicos = ma.getPaisesUnicos(nosPaises);
+
+            ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+            ArrayList<String> filiacoes = new ArrayList<String>();
+
+            try {
+                artigos = ma.lerFiliacoesPorArtigo(arquivo);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //lista de arestas únicas
+            ArrayList<Aresta> arestas = new ArrayList<Aresta>();
+            ArrayList<Aresta> arestasUnicas = new ArrayList<Aresta>();
+
+            //gerando listagem de arestas
+            arestas = mg.gerarArestasDeNosPaises(nosUnicos, artigos);
+            arestasUnicas = mg.gerarArestasUnicas(arestas);
+
+            //para calcular a frequência de cada arestas
+            String textoEscrita = mg.listarArestasPaises(arestas, arestasUnicas);
+            System.out.println(textoEscrita);
+
+            //String textoEscrita = mg.gerarTextoNosArrayList("", nos);
+
+            //Com os nós gerados agora serão salvos no arquivo
+            //.csv escolhido pelo usuário
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
+
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                //salvando o arquivo
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
+
+            }
+
+        }
+
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // Código para capturar Filiações (Países):
+
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+
+            File arq = fc.getSelectedFile();
+            //pegar o nome do arquivo
+
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+
+            //nesse ArrayList existem nós repetidos
+            ArrayList<No> nosPaises = null;
+            try {
+                nosPaises = ma.getPaises(arq);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ArrayList<No> nosUnicos = ma.getPaisesUnicos(nosPaises);
+
+            String texto = "Id;Latitude;Longitude;Label"+"\n";
+            for (No no : nosUnicos){
+
+                System.out.println("País: "+ no.getId()+no.getLabel());
+                texto = texto +no.getId()+";;;"+no.getLabel()+"\n";
+
+            }
+
+            System.out.println(texto);
+
+            //String textoEscrita = mg.gerarTextoNosArrayList("", nos);
+
+            //Com os nós gerados agora serão salvos no arquivo
+            //.csv escolhido pelo usuário
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
+
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                //Falta salvar o arquivo
+
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(texto, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
+
+            }
+
+        }
+
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // código para gerar arestas
+        //para Arestas (Scopus)
+
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+
+            File arquivo = fc.getSelectedFile();
+
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+
+            //ArrayList<No> nos = new ArrayList<No>();
+            ArrayList<Autor> autores = new ArrayList<Autor>();
+            ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+
+            autores = ma.lerAutores(arquivo);
+            artigos = ma.lerAutoresPorArtigo(arquivo);
+            //lista de arestas únicas
+            ArrayList<Aresta> arestas = new ArrayList<Aresta>();
+            ArrayList<Aresta> arestasUnicas = new ArrayList<Aresta>();
+            arestas = mg.gerarArestasArrayList(autores, artigos);
+            arestasUnicas = mg.gerarArestasUnicas(arestas);
+
+            //para calcular a frequência de cada arestas
+            String textoEscrita = mg.listarArestas(arestas, arestasUnicas);
+
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
+
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
+
+            }
+
+        }
+
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+
+        //código para gerar nós
+
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+
+            File arquivo = fc.getSelectedFile();
+
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            //ArrayList<Autor> lista = new ArrayList<Autor>();
             ArrayList<No> nos = new ArrayList<No>();
             System.out.println("Gerando nós");
             nos = ma.lerArrayListNos(arquivo);
-
 
             String textoEscrita = mg.gerarTextoNosArrayList("", nos);
 
@@ -167,8 +454,7 @@ public class Principal extends javax.swing.JFrame {
             //Se o usuário clicar em OK
             if(resposta2 == JFileChooser.APPROVE_OPTION){
 
-                //Falta salvar o arquivo    
-
+                //Falta salvar o arquivo
 
                 File arqSalvo = fc.getSelectedFile();
                 try {
@@ -181,140 +467,71 @@ public class Principal extends javax.swing.JFrame {
 
             }
 
-            
         }
-        
-                       
-        
-    }//GEN-LAST:event_cutMenuItemActionPerformed
 
-    private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
-          // código para gerar arestas
-        //para Arestas (Scopus)
-        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // Código para gerar rede de Citações:
+
         //tipos de arquivos a serem escolhidos:
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
-        
+
         //Usando o JfileChooser
         JFileChooser fc = new JFileChooser();
-        
+
         //adicionando tipos de arquivos que podem ser escolhidos
         fc.setFileFilter(filtro);
-        
+
         //título da tela
         fc.setDialogTitle("Escolha o arquivo ...");
-        
+
         //escolhendo somente arquivos
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-       
+
         //resposta da janela
         int resposta = fc.showOpenDialog(this);
-        
+
         //verificando a resposta:
         //Se o usuário clicar em OK
         if(resposta == JFileChooser.APPROVE_OPTION){
-            
-            File arquivo = fc.getSelectedFile();
-        
+
+            File arq = fc.getSelectedFile();
+            //pegar o nome do arquivo
+
             ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
-            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
 
-        
-        
-            //ArrayList<No> nos = new ArrayList<No>();
-            ArrayList<Autor> autores = new ArrayList<Autor>();
-            ArrayList<Artigo> artigos = new ArrayList<Artigo>();
+          
+            //String textoEscrita = mg.gerarTextoNosArrayList("", nos);
 
+            //Com os nós gerados agora serão salvos no arquivo
+            //.csv escolhido pelo usuário
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
 
-            autores = ma.lerAutores(arquivo);
-            artigos = ma.lerAutoresPorArtigo(arquivo);
-            //lista de arestas únicas
-            ArrayList<Aresta> arestas = new ArrayList<Aresta>();
-            ArrayList<Aresta> arestasUnicas = new ArrayList<Aresta>();
-            arestas = mg.gerarArestasArrayList(autores, artigos);
-            arestasUnicas = mg.gerarArestasUnicas(arestas);
-     
-            
-            //para calcular a frequência de cada arestas
-            String textoEscrita = mg.listarArestas(arestas, arestasUnicas);
-            
-            /*
-            
-            ManipuladorDeArquivos m = new ManipuladorDeArquivos();
-            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
 
+                //Falta salvar o arquivo
 
-            ArrayList<Autor> autores = new ArrayList<Autor>();
-            ArrayList<Artigo> artigos = new ArrayList<Artigo>();
-            
-            //lista de autores é igual a nós
-            autores = m.lerAutores(arquivo);
-            artigos = m.lerAutoresPorArtigo(arquivo);
-            
-            
-            
-            
-            //exibindo lista de autores (Scopus)
-            //System.out.println("lista recebida");
-            for(int i=0;i<=autores.size()-1; i++){
-
+                File arqSalvo = fc.getSelectedFile();
                 
-                //System.out.println(autores.get(i));
-                
-              
+
             }
-                
-            String textoEscrita = null;
-            TreeSet<Autor> autoresTree = new TreeSet<Autor>();
-            autoresTree = m.geraTreeSetAutores(autores);
-            
-            
-            textoEscrita = mg.gerarTextoArestas(textoEscrita,autoresTree, artigos);
-            
-             List<Aresta> lista = new ArrayList<Aresta>();
-             TreeSet<Aresta> arestasOrdenadas = new TreeSet<Aresta>();
-            
-            
-            lista = mg.gerarArestas(autoresTree, artigos);
-            arestasOrdenadas = mg.gerarArestasOrdenadas(lista);
-            */
-            //textoEscrita = mg.listarArestasOrdenadas(arestasOrdenadas, lista);
-            //textoEscrita = mg.listarArestasOrdenadas(, )
-            
-                //Com os nós e arestas gerados agora serão salvos no arquivo
-                //.csv escolhido pelo usuário
-                //salvando o arquivo
-                fc.setDialogTitle("Salvando o arquivo");
-                //resposta da janela
-                int resposta2 = fc.showOpenDialog(this);
 
-                //verificando a resposta:
-                //Se o usuário clicar em OK
-                if(resposta2 == JFileChooser.APPROVE_OPTION){
-
-                    
-                    
-                    
-                    File arqSalvo = fc.getSelectedFile();
-                    try {
-                        FileWriter fw = new FileWriter( arqSalvo );
-                        ma.escreveCsv(textoEscrita, fw);
-                        JOptionPane.showMessageDialog(this, "Arquivo salvo");
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(this, "Erro"+ex);
-                    }
-
-                }
-
-            
         }
-        
 
-    }//GEN-LAST:event_deleteMenuItemActionPerformed
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -349,13 +566,23 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuBar menuBar;
     // End of variables declaration//GEN-END:variables
 

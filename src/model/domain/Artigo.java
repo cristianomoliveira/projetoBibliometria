@@ -16,6 +16,7 @@ public class Artigo {
     //a lista de autores é ordenada
     private ArrayList<Autor> autores = new ArrayList<Autor>();
     private ArrayList<String> filiacoes = new ArrayList<String>();
+    private int nCitacoes;
 
     
     public Artigo (){
@@ -42,6 +43,10 @@ public class Artigo {
      }
         
        
+    }
+
+    public void setAutores(ArrayList<Autor> autores) {
+        this.autores = autores;
     }
     
     
@@ -72,6 +77,14 @@ public class Artigo {
         
         return this.filiacoes;
         
+    }
+
+    public int getnCitacoes() {
+        return nCitacoes;
+    }
+
+    public void setnCitacoes(int nCitacoes) {
+        this.nCitacoes = nCitacoes;
     }
     
     

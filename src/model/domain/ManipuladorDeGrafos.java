@@ -124,7 +124,37 @@ public class ManipuladorDeGrafos {
    
     
     
-    public String listarArestas(ArrayList<Aresta> arestas, ArrayList<Aresta> arestasUnicas){
+    public String listarArestasPaises(ArrayList<Aresta> arestas, ArrayList<Aresta> arestasUnicas){
+        
+        String textoSaida = "";
+        int cont =0;
+        
+        
+        textoSaida=textoSaida+"Id;Source;Target;Type;Weight;Label;Paises"+"\n";
+        
+        
+        for (Aresta aresta:arestasUnicas){
+            
+            
+            cont = this.frequeciaArestas(arestas, aresta);
+            textoSaida=textoSaida+aresta.getId()+";"
+                    +aresta.getOrigem().getId()+";"
+                    +aresta.getDestino().getId()+";"
+                    +"Undirected;"
+                    +cont+";"
+                    +cont+";"
+                    +aresta.getOrigem().getLabel()+" - "+aresta.getDestino().getLabel()
+                    +"\n";
+                    
+                    //aresta.toString()+"frequencia: "+cont+"\n";
+            
+        }    
+        
+        return textoSaida;
+        
+    }
+    
+        public String listarArestas(ArrayList<Aresta> arestas, ArrayList<Aresta> arestasUnicas){
         
         String textoSaida = "";
         int cont =0;
@@ -152,8 +182,6 @@ public class ManipuladorDeGrafos {
         return textoSaida;
         
     }
-    
-    
     
     
     

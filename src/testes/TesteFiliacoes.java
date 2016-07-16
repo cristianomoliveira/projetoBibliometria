@@ -1,3 +1,5 @@
+package testes;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,12 +18,12 @@ public class TesteFiliacoes {
     
     public static void main (String args[]) throws FileNotFoundException, IOException{
     
-      
-        String arquivo = "C://testes//Affiliations(com4).csv";
-       //File arquivo = new File("C://testes//scopus(com 28).csv"); 
+        //pegar o nome do arquivo
+        //String arquivo = "C://testes//Affiliations(com28).csv";
+       File arquivo = new File("C://testes//scopus(com 28).csv"); 
         
         ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
-                
+           
          //nesse ArrayList existem nós repetidos
          ArrayList<No> nosPaises = ma.getPaises(arquivo);
          ArrayList<No> nosUnicos = ma.getPaisesUnicos(nosPaises);
@@ -37,6 +39,8 @@ public class TesteFiliacoes {
         
         System.out.println(texto);
         
+        
+        //pegar o nome do arquivo para salvar
         File arquivoW = new File("C://testes//paises.csv");
         
         FileWriter fw = new FileWriter( arquivoW );
