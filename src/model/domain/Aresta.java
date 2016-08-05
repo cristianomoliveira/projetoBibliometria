@@ -81,7 +81,7 @@ public class Aresta implements Comparable<Aresta>{
         {
 
               igual = true;
-              System.out.println("-- EQUALS ---Arestas iguais");
+              //System.out.println("-- EQUALS ---Arestas iguais");
 
         }
         

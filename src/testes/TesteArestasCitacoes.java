@@ -1,10 +1,11 @@
- 
+
 package testes;
 
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.domain.Aresta;
 import model.domain.Artigo;
 import model.domain.Autor;
 import model.domain.ManipuladorDeArquivos;
@@ -15,36 +16,44 @@ import model.domain.No;
  *
  * @author cristiano
  */
-public class TesteNosCitacoes {
+public class TesteArestasCitacoes {
     
-    
-    public static void main (String args []){
-        
-        File arquivo = new File("C://Users//cristiano//Documents//Cristiano//Engenharia//Mestrado//06 - Sistema em Java Para Gephi//PesquisaScopus//gephi-24-07-16.csv");
+     public static void main (String args []){
+         
+        File arquivo = new File("C://testes//scopus(com 28).csv");
         
         
         ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
         ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
         ArrayList <Artigo> artigos = new ArrayList<Artigo>();
-        ArrayList <Artigo> artigosComCitacao = new ArrayList<Artigo>();
+        ArrayList<Autor> autores = new ArrayList<Autor>();
+        ArrayList<Autor> autoresCitadores = new ArrayList<Autor>();
         ArrayList <Artigo> artigosCitadores = new ArrayList<Artigo>();
         ArrayList <Artigo> artigosCitadores2 = new ArrayList<Artigo>();
-        ArrayList<Autor> autores = new ArrayList<Autor>();
+        ArrayList <Artigo> artigosComCitacao = new ArrayList<Artigo>();
+        ArrayList <Aresta> arestas = new ArrayList<Aresta>();
+        ArrayList <Aresta> arestasTemp = new ArrayList<Aresta>();
+        
+        
         artigos = ma.getArtigosScopus(arquivo);
         
-        //lendo os artigos dos arquivos em que foram citados
+        //precisa gerar uma lista de nós antes de gerar as arestas
         
+        
+        //Artigo citado
         for(Artigo a:artigos){
             
             System.out.println("Artigo: "+a.getTitulo());
             System.out.println("Nº de citações: "+a.getnCitacoes());
             autores = a.getAutores();
             System.out.println("Autores: ");
+            //Exibundo os autores do artigo Citado
             for(Autor autor:autores){
                 System.out.println("--"+autor.getNome());
             }
+            //Pegando os artigos citadores
             if (a.getnCitacoes() > 0){
-                System.out.println("---Tem autores que citaram");
+                
                 //tipos de arquivos a serem escolhidos:
                 FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
 
@@ -64,13 +73,31 @@ public class TesteNosCitacoes {
                     File arquivo2 = fc.getSelectedFile();
                     artigosCitadores = ma.getArtigosScopus(arquivo2);
                     artigosCitadores2 = ma.unirListaArtigos(artigosCitadores2, artigosCitadores);
+                    System.out.println("---Artigos citadores");
+                    for(Artigo artigoCitador: artigosCitadores){
+                        System.out.println("----"+artigoCitador.getTitulo());
+                        autoresCitadores = artigoCitador.getAutores();
+                        System.out.println("----AUTORES:");
+                        for(Autor autorCitador:autoresCitadores){
+                            System.out.println("-----"+autorCitador.getNome());
+                        }
+
+                        //Gerando lista de arestas---
+                        arestasTemp = mg.gerarArestasArtigosCitados(a, artigoCitador);
+                        arestas = mg.addSubListaEmLista(arestasTemp, arestas);
+
+                    }
+                    artigosCitadores = new ArrayList<Artigo>();
                 }
                 
             }
+            
         }
         
-      
-        //pegando somente artigos com citações
+        
+        
+        
+         //pegando somente artigos com citações
         for(Artigo artigo:artigos){
             if(artigo.getnCitacoes()>0){
                 artigosComCitacao.add(artigo);
@@ -78,34 +105,32 @@ public class TesteNosCitacoes {
             }
         }
         
-        /*
-        System.out.println("mostrando os artigos que foram citados");
-        for(Artigo artigo:artigosComCitacao){
-             System.out.println(artigo.getTitulo());
-        }
-        */
         
         //unindo as duas listas de artigos:
         artigos = ma.unirListaArtigos(artigosComCitacao, artigosCitadores2);
-
-
-        //lendo os autores dos artigos(que não foram citados)
         autores = ma.lerAutoresDeArtigos(artigos);
         
-        /*
         System.out.println("AUTORES");
         for(Autor autor:autores){
             System.out.println(autor.getId()+" ; "+autor.getNome());
             
         }
-        */
+        
         
         ArrayList<No> nos = new ArrayList<No>();
         nos = ma.autoresEmNos(autores);
-        String textoEscrita = mg.gerarTextoNosArrayList("", nos);
-        System.out.println("Autores dos Artigos");
-        System.out.println(textoEscrita);
         
-    }
+        
+        for (Aresta aresta:arestas){
+            System.out.println(aresta.getOrigem().getLabel()+"-"
+                    + ""+aresta.getDestino().getLabel());
+        }
+         
+        String texto = mg.gerarTextoCitacoes(arestas, nos);
+        System.out.println(texto); 
+     }
+    
+    
+    
     
 }

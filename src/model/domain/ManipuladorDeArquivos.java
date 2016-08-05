@@ -354,15 +354,19 @@ public class ManipuladorDeArquivos {
         ArrayList<Artigo> artigos = new ArrayList<Artigo>();
         ArrayList<Autor> autores = new ArrayList<Autor>();
         ArrayList<String []> texto = this.getLinhasScopus(arquivo);
+        System.out.println("Lendo Artigos");
         for(int i=0;i<=texto.size()-1; i++){
             Artigo a = new Artigo();
             
             //adiconando campos ao Artigo
             a.setTitulo(texto.get(i)[1]);
+            //System.out.println("Linha: "+i+ " Titulo: "+texto.get(i)[1]+
+            //        "Citacoes: "+texto.get(i)[10]+"");
             autores = this.getAutores(texto.get(i)[0]); 
             a.setAutores(autores);
             
             if(!texto.get(i)[10].equals("")){
+                //System.out.println("Numero de citacoes: "+texto.get(i)[10]);
                 a.setnCitacoes(Integer.parseInt(texto.get(i)[10]));
             }
             
@@ -648,6 +652,13 @@ public class ManipuladorDeArquivos {
             
             String s = linha;
             String[] splitted = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+            /*
+            for(int k=0; k<=splitted.length-1;k++){
+                System.out.println("----"+splitted[k]);
+                
+            }
+            */
+            
             linhas.add(splitted);
             
         }
@@ -683,7 +694,7 @@ public class ManipuladorDeArquivos {
         //manipulando a String
         for(int i=1;i<=texto.size()-1; i++){
             linha = texto.get(i);
-            
+            System.out.println("Linha "+i);
            // String s = linha;
            // String[] splitted = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
            // System.out.println("texto com split"+splitted[13]);
@@ -1084,6 +1095,29 @@ public class ManipuladorDeArquivos {
         
     }
     
+    
+    
+    public ArrayList<No> artigosEmNos(ArrayList<Artigo> artigos){
+        
+        ArrayList<No> nos = new ArrayList<No> ();
+        ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+        int id = 0;
+        
+        for (Artigo artigo:artigos){
+            No no = new No(artigo.getTitulo());
+            if(!mg.existeNo(no, nos)){
+                id++;
+                nos.add(no);
+                
+            
+            }
+        }
+        
+        return nos;
+    }
+    
+    
+    
     public ArrayList<No> autoresEmNos(ArrayList<Autor> autores){
         
         ArrayList<No> nos = new ArrayList<No> ();
@@ -1095,6 +1129,7 @@ public class ManipuladorDeArquivos {
             if(!mg.existeNo(no, nos)){
                 id++;
                 nos.add(no);
+                
             
             }
         }

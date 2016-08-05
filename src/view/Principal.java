@@ -28,8 +28,15 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    
+    
     public Principal() {
         initComponents();
+        this.jPanel1.setVisible(false);
+        
+       
+        
+        
     }
 
     /**
@@ -42,26 +49,58 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        CoautoriaGerarNos = new javax.swing.JMenuItem();
+        CoautoriaGerarArestas = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        GeoGerarNos = new javax.swing.JMenuItem();
+        GeoGerarArestas = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
+        CitacaoesGerarAutores = new javax.swing.JMenuItem();
+        CitacoesGerarArestasAutores = new javax.swing.JMenuItem();
+        CitacoesGerarArtigos = new javax.swing.JMenuItem();
+        CitacoesGerarArestasArtigos = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Status da execução");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
+        );
+
+        desktopPane.add(jPanel1);
+        jPanel1.setBounds(200, 70, 380, 190);
+        jPanel1.getAccessibleContext().setAccessibleName("");
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Arquivo");
@@ -83,58 +122,79 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu1.setText("Rede Co-autoria");
 
-        jMenuItem4.setText("Gerar Nós");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        CoautoriaGerarNos.setText("Gerar Nós");
+        CoautoriaGerarNos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                CoautoriaGerarNosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jMenu1.add(CoautoriaGerarNos);
 
-        jMenuItem5.setText("Gerar Arestas");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        CoautoriaGerarArestas.setText("Gerar Arestas");
+        CoautoriaGerarArestas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                CoautoriaGerarArestasActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem5);
+        jMenu1.add(CoautoriaGerarArestas);
 
         editMenu.add(jMenu1);
         editMenu.add(jSeparator2);
 
         jMenu2.setText("Rede Geográfica");
 
-        jMenuItem6.setText("Gerar Nós");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        GeoGerarNos.setText("Gerar Nós");
+        GeoGerarNos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                GeoGerarNosActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
+        jMenu2.add(GeoGerarNos);
 
-        jMenuItem7.setText("Gerar Arestas");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        GeoGerarArestas.setText("Gerar Arestas");
+        GeoGerarArestas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                GeoGerarArestasActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem7);
+        jMenu2.add(GeoGerarArestas);
 
         editMenu.add(jMenu2);
         editMenu.add(jSeparator3);
 
         jMenu3.setText("Rede de Citações");
 
-        jMenuItem8.setText("Gerar Nós");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        CitacaoesGerarAutores.setText("Gerar Nós(Autores)");
+        CitacaoesGerarAutores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                CitacaoesGerarAutoresActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem8);
+        jMenu3.add(CitacaoesGerarAutores);
 
-        jMenuItem9.setText("Gerar Arestas");
-        jMenu3.add(jMenuItem9);
+        CitacoesGerarArestasAutores.setText("Gerar Arestas");
+        CitacoesGerarArestasAutores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CitacoesGerarArestasAutoresActionPerformed(evt);
+            }
+        });
+        jMenu3.add(CitacoesGerarArestasAutores);
+
+        CitacoesGerarArtigos.setText("Gerar Nós (Artigos)");
+        CitacoesGerarArtigos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CitacoesGerarArtigosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(CitacoesGerarArtigos);
+
+        CitacoesGerarArestasArtigos.setText("Gerar Arestas");
+        CitacoesGerarArestasArtigos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CitacoesGerarArestasArtigosActionPerformed(evt);
+            }
+        });
+        jMenu3.add(CitacoesGerarArestasArtigos);
 
         editMenu.add(jMenu3);
 
@@ -169,7 +229,7 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void GeoGerarArestasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GeoGerarArestasActionPerformed
         // Código para gerar arestas dos países (Filiações)
 
         //tipos de arquivos a serem escolhidos:
@@ -256,9 +316,9 @@ public class Principal extends javax.swing.JFrame {
 
         }
 
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_GeoGerarArestasActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void GeoGerarNosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GeoGerarNosActionPerformed
         // Código para capturar Filiações (Países):
 
         //tipos de arquivos a serem escolhidos:
@@ -335,9 +395,9 @@ public class Principal extends javax.swing.JFrame {
 
         }
 
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_GeoGerarNosActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void CoautoriaGerarArestasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CoautoriaGerarArestasActionPerformed
         // código para gerar arestas
         //para Arestas (Scopus)
 
@@ -370,15 +430,54 @@ public class Principal extends javax.swing.JFrame {
 
             //ArrayList<No> nos = new ArrayList<No>();
             ArrayList<Autor> autores = new ArrayList<Autor>();
+            ArrayList<Autor> autoresTotais = new ArrayList<Autor>();
             ArrayList<Artigo> artigos = new ArrayList<Artigo>();
 
-            autores = ma.lerAutores(arquivo);
-            artigos = ma.lerAutoresPorArtigo(arquivo);
+            //autores = ma.lerAutores(arquivo);
+            //artigos = ma.lerAutoresPorArtigo(arquivo);
+            
+            
+            artigos = ma.getArtigosScopus(arquivo);
+            
+           
+            
+            for(Artigo a:artigos){
+                //System.out.println(a.getTitulo());
+                autores = a.getAutores();
+                for(Autor autor:autores){
+                   // System.out.println("--"+autor.getNome());
+                    autoresTotais.add(autor);
+                }
+            }
+            
+            
             //lista de arestas únicas
             ArrayList<Aresta> arestas = new ArrayList<Aresta>();
             ArrayList<Aresta> arestasUnicas = new ArrayList<Aresta>();
-            arestas = mg.gerarArestasArrayList(autores, artigos);
+            
+            
+            
+            arestas = mg.gerarArestasArrayList(autoresTotais, artigos);
             arestasUnicas = mg.gerarArestasUnicas(arestas);
+            
+            //System.out.println("LISTA TOTAL DE ARESTAS:"+arestas.size());
+            //System.out.println("---------------------");
+            for(Aresta aresta:arestas){
+                //System.out.println(aresta);
+                
+            }
+            //System.out.println("---------------------");
+            
+            
+            //System.out.println("LISTA ÚNICA DE ARESTAS:"+arestasUnicas.size());
+            //System.out.println("---------------------");
+            for(Aresta aresta:arestasUnicas){
+               // System.out.println(aresta);
+                
+            }
+            //System.out.println("---------------------");
+            
+            
 
             //para calcular a frequência de cada arestas
             String textoEscrita = mg.listarArestas(arestas, arestasUnicas);
@@ -404,10 +503,12 @@ public class Principal extends javax.swing.JFrame {
 
         }
 
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_CoautoriaGerarArestasActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void CoautoriaGerarNosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CoautoriaGerarNosActionPerformed
 
+       
+        
         //código para gerar nós
 
         //tipos de arquivos a serem escolhidos:
@@ -436,12 +537,42 @@ public class Principal extends javax.swing.JFrame {
 
             ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
             ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            ArrayList <Artigo> artigos = new ArrayList<Artigo>();
+            ArrayList <Autor> autores = new ArrayList<Autor>();
+            ArrayList <Autor> autoresTotais = new ArrayList<Autor>();
             //ArrayList<Autor> lista = new ArrayList<Autor>();
             ArrayList<No> nos = new ArrayList<No>();
             System.out.println("Gerando nós");
-            nos = ma.lerArrayListNos(arquivo);
-
+            //nos = ma.lerArrayListNos(arquivo);
+            
+            artigos = ma.getArtigosScopus(arquivo);
+            
+            
+            
+            
+            this.jPanel1.setVisible(true);
+            for(Artigo a:artigos){
+               // System.out.println(a.getTitulo());
+                autores = a.getAutores();
+                for(Autor autor:autores){
+                   // System.out.println("--"+autor.getNome());
+                    autoresTotais.add(autor);
+                }
+            }
+            
+            this.jProgressBar1.setValue(50);
+            
+            
+            nos = ma.autoresEmNos(autoresTotais);
+            
+            
+            
+            
+            
             String textoEscrita = mg.gerarTextoNosArrayList("", nos);
+            
+            this.jProgressBar1.setValue(100);
+            this.jPanel1.setVisible(false);
 
             //Com os nós gerados agora serão salvos no arquivo
             //.csv escolhido pelo usuário
@@ -466,13 +597,13 @@ public class Principal extends javax.swing.JFrame {
                 }
 
             }
-
+            
         }
 
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_CoautoriaGerarNosActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // Código para gerar rede de Citações:
+    private void CitacaoesGerarAutoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CitacaoesGerarAutoresActionPerformed
+        // Código para gerar nós (Autores) da rede de Citações:
 
         //tipos de arquivos a serem escolhidos:
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
@@ -496,16 +627,105 @@ public class Principal extends javax.swing.JFrame {
         //Se o usuário clicar em OK
         if(resposta == JFileChooser.APPROVE_OPTION){
 
-            File arq = fc.getSelectedFile();
+            File arquivo = fc.getSelectedFile();
             //pegar o nome do arquivo
-
+            
             ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            ArrayList <Artigo> artigos = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosComCitacao = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores2 = new ArrayList<Artigo>();
+            ArrayList<Autor> autores = new ArrayList<Autor>();
+            artigos = ma.getArtigosScopus(arquivo);
+            File arquivo2 = arquivo;
+            
+            
+            //pegando todas as citações
+            for(Artigo a:artigos){
+            
+            System.out.println("Artigo: "+a.getTitulo());
+            System.out.println("Nº de citações: "+a.getnCitacoes());
+            autores = a.getAutores();
+            System.out.println("Autores: ");
+            for(Autor autor:autores){
+                System.out.println("--"+autor.getNome());
+            }
+            if (a.getnCitacoes() > 0){
+                System.out.println("---Tem autores que citaram");
+                //tipos de arquivos a serem escolhidos:
+                FileNameExtensionFilter filtroCitacao = new FileNameExtensionFilter("CSV", "csv");
+
+                //Usando o JfileChooser
+                JFileChooser fcCitacao = new JFileChooser();
+
+                //adicionando tipos de arquivos que podem ser escolhidos
+                fcCitacao.setFileFilter(filtroCitacao);
+
+                //título da tela
+                fcCitacao.setDialogTitle("Abrindo: "+a.getTitulo());
+                
+                fcCitacao.setCurrentDirectory(arquivo2);
+
+                //escolhendo somente arquivos
+                fcCitacao.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int respostaCitacao = fcCitacao.showOpenDialog(null);
+                if(respostaCitacao == JFileChooser.APPROVE_OPTION){
+                    arquivo2 = fcCitacao.getSelectedFile();
+                    artigosCitadores = ma.getArtigosScopus(arquivo2);
+                    artigosCitadores2 = ma.unirListaArtigos(artigosCitadores2, artigosCitadores);
+                    }
+                
+                }
+            }
+            
+            //this.jProgressBar1.setValue(0);
+            //int i = 0;
+            //this.desktopPane.setVisible(true);
+            
+           //pegando somente artigos com citações
+           for(Artigo artigo:artigos){
+               
+               //this.jProgressBar1.setValue((i++)/artigos.size());
+               if(artigo.getnCitacoes()>0){
+                   artigosComCitacao.add(artigo);
+
+               }
+           }
+           //this.desktopPane.setVisible(false);
+
+           /*
+           System.out.println("mostrando os artigos que foram citados");
+           for(Artigo artigo:artigosComCitacao){
+                System.out.println(artigo.getTitulo());
+           }
+           */
+
+           //unindo as duas listas de artigos:
+           artigos = ma.unirListaArtigos(artigosComCitacao, artigosCitadores2);
+
+
+           //lendo os autores dos artigos(que não foram citados)
+           autores = ma.lerAutoresDeArtigos(artigos);
+
+           /*
+           System.out.println("AUTORES");
+           for(Autor autor:autores){
+               System.out.println(autor.getId()+" ; "+autor.getNome());
+
+           }
+           */
+
+           ArrayList<No> nos = new ArrayList<No>();
+           nos = ma.autoresEmNos(autores);
+           String textoEscrita = mg.gerarTextoNosArrayList("", nos);
+           System.out.println("Autores dos Artigos");
+           System.out.println(textoEscrita);
 
           
-            //String textoEscrita = mg.gerarTextoNosArrayList("", nos);
 
-            //Com os nós gerados agora serão salvos no arquivo
-            //.csv escolhido pelo usuário
+          
+            
             //salvando o arquivo
             fc.setDialogTitle("Salvando o arquivo");
             //resposta da janela
@@ -518,13 +738,483 @@ public class Principal extends javax.swing.JFrame {
                 //Falta salvar o arquivo
 
                 File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
                 
 
             }
 
         }
 
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_CitacaoesGerarAutoresActionPerformed
+
+    private void CitacoesGerarArestasAutoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CitacoesGerarArestasAutoresActionPerformed
+        // código para gerar arestas da rede de citações, nós autores:
+        
+        
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+
+            File arquivo = fc.getSelectedFile();
+            //pegar o nome do arquivo
+            
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            ArrayList <Artigo> artigos = new ArrayList<Artigo>();
+            ArrayList<Autor> autores = new ArrayList<Autor>();
+            ArrayList<Autor> autoresCitadores = new ArrayList<Autor>();
+            ArrayList <Artigo> artigosCitadores = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores2 = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosComCitacao = new ArrayList<Artigo>();
+            ArrayList <Aresta> arestas = new ArrayList<Aresta>();
+            ArrayList <Aresta> arestasTemp = new ArrayList<Aresta>();
+
+        
+            artigos = ma.getArtigosScopus(arquivo);
+            File arquivoCitacao = arquivo;
+            //Artigo citado
+            for(Artigo a:artigos){
+
+                System.out.println("Artigo: "+a.getTitulo());
+                System.out.println("Nº de citações: "+a.getnCitacoes());
+                autores = a.getAutores();
+                System.out.println("Autores: ");
+                //Exibundo os autores do artigo Citado
+                for(Autor autor:autores){
+                    System.out.println("--"+autor.getNome());
+                }
+                //Pegando os artigos citadores
+                if (a.getnCitacoes() > 0){
+
+                    //tipos de arquivos a serem escolhidos:
+                    FileNameExtensionFilter filtroCitacao = new FileNameExtensionFilter("CSV", "csv");
+                    //Usando o JfileChooser
+                    JFileChooser fcCitacao = new JFileChooser();
+                    //adicionando tipos de arquivos que podem ser escolhidos
+                    fcCitacao.setFileFilter(filtroCitacao);
+                    //título da tela
+                    fcCitacao.setDialogTitle("Abrindo: "+a.getTitulo());
+                    fcCitacao.setCurrentDirectory(arquivoCitacao);
+
+                    //escolhendo somente arquivos
+                    fcCitacao.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    int respostaCitacao = fcCitacao.showOpenDialog(null);
+                    if(respostaCitacao == JFileChooser.APPROVE_OPTION){
+                        arquivoCitacao = fcCitacao.getSelectedFile();
+                        artigosCitadores = ma.getArtigosScopus(arquivoCitacao);
+                        artigosCitadores2 = ma.unirListaArtigos(artigosCitadores2, artigosCitadores);
+                        System.out.println("---Artigos citadores");
+                        for(Artigo artigoCitador: artigosCitadores){
+                            System.out.println("----"+artigoCitador.getTitulo());
+                            autoresCitadores = artigoCitador.getAutores();
+                            System.out.println("----AUTORES:");
+                            for(Autor autorCitador:autoresCitadores){
+                                System.out.println("-----"+autorCitador.getNome());
+                            }
+
+                            //Gerando lista de arestas---
+                            arestasTemp = mg.gerarArestasArtigosCitados(a, artigoCitador);
+                            arestas = mg.addSubListaEmLista(arestasTemp, arestas);
+
+                            }
+                        artigosCitadores = new ArrayList<Artigo>();
+                        }
+
+                    }
+
+                }
+            
+            
+            
+            
+            //pegando somente artigos com citações
+            for(Artigo artigo:artigos){
+                if(artigo.getnCitacoes()>0){
+                    artigosComCitacao.add(artigo);
+
+                }
+            }
+
+
+            //unindo as duas listas de artigos:
+            artigos = ma.unirListaArtigos(artigosComCitacao, artigosCitadores2);
+            autores = ma.lerAutoresDeArtigos(artigos);
+
+            System.out.println("AUTORES");
+            for(Autor autor:autores){
+                System.out.println(autor.getId()+" ; "+autor.getNome());
+
+            }
+
+
+            ArrayList<No> nos = new ArrayList<No>();
+            nos = ma.autoresEmNos(autores);
+
+
+            for (Aresta aresta:arestas){
+                System.out.println(aresta.getOrigem().getLabel()+"-"
+                        + ""+aresta.getDestino().getLabel());
+            }
+
+            String textoEscrita = mg.gerarTextoCitacoes(arestas, nos);
+            System.out.println(textoEscrita); 
+                
+            
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
+
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                //Falta salvar o arquivo
+
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
+                
+
+            }
+
+        }
+
+        
+       
+        
+        
+    }//GEN-LAST:event_CitacoesGerarArestasAutoresActionPerformed
+
+    private void CitacoesGerarArtigosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CitacoesGerarArtigosActionPerformed
+       // Código para gerar nós (Artigos) da rede de Citações:
+
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+
+            File arquivo = fc.getSelectedFile();
+            //pegar o nome do arquivo
+            
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            ArrayList <Artigo> artigos = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosComCitacao = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores2 = new ArrayList<Artigo>();
+            
+            artigos = ma.getArtigosScopus(arquivo);
+            File arquivo2 = arquivo;
+            
+            
+            //pegando todas as citações
+            for(Artigo a:artigos){
+            
+            System.out.println("Artigo: "+a.getTitulo());
+            System.out.println("Nº de citações: "+a.getnCitacoes());
+            
+            System.out.println("Artigos: ");
+            
+            if (a.getnCitacoes() > 0){
+                System.out.println("---Tem artigos que citaram");
+                //tipos de arquivos a serem escolhidos:
+                FileNameExtensionFilter filtroCitacao = new FileNameExtensionFilter("CSV", "csv");
+
+                //Usando o JfileChooser
+                JFileChooser fcCitacao = new JFileChooser();
+
+                //adicionando tipos de arquivos que podem ser escolhidos
+                fcCitacao.setFileFilter(filtroCitacao);
+
+                //título da tela
+                fcCitacao.setDialogTitle("Abrindo: "+a.getTitulo());
+                
+                fcCitacao.setCurrentDirectory(arquivo2);
+
+                //escolhendo somente arquivos
+                fcCitacao.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int respostaCitacao = fcCitacao.showOpenDialog(null);
+                if(respostaCitacao == JFileChooser.APPROVE_OPTION){
+                    arquivo2 = fcCitacao.getSelectedFile();
+                    artigosCitadores = ma.getArtigosScopus(arquivo2);
+                    artigosCitadores2 = ma.unirListaArtigos(artigosCitadores2, artigosCitadores);
+                    }
+                
+                }
+            }
+            
+            //this.jProgressBar1.setValue(0);
+            //int i = 0;
+            //this.desktopPane.setVisible(true);
+            
+           //pegando somente artigos com citações
+           for(Artigo artigo:artigos){
+               
+               //this.jProgressBar1.setValue((i++)/artigos.size());
+               if(artigo.getnCitacoes()>0){
+                   artigosComCitacao.add(artigo);
+
+               }
+           }
+           //this.desktopPane.setVisible(false);
+
+           /*
+           System.out.println("mostrando os artigos que foram citados");
+           for(Artigo artigo:artigosComCitacao){
+                System.out.println(artigo.getTitulo());
+           }
+           */
+
+           //unindo as duas listas de artigos:
+           artigos = ma.unirListaArtigos(artigosComCitacao, artigosCitadores2);
+
+
+           
+
+           
+
+           ArrayList<No> nos = new ArrayList<No>();
+           nos = ma.artigosEmNos(artigos);
+           String textoEscrita = mg.gerarTextoNosArrayList("", nos);
+           System.out.println("Artigos");
+           System.out.println(textoEscrita);
+
+          
+
+          
+            
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
+
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                
+
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
+                
+
+            }
+
+        }
+
+        
+        
+        
+    }//GEN-LAST:event_CitacoesGerarArtigosActionPerformed
+
+    private void CitacoesGerarArestasArtigosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CitacoesGerarArestasArtigosActionPerformed
+        // Código para gerar Arestas da rede citações (Nós: Artigos):
+        
+        //tipos de arquivos a serem escolhidos:
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("CSV", "csv");
+
+        //Usando o JfileChooser
+        JFileChooser fc = new JFileChooser();
+
+        //adicionando tipos de arquivos que podem ser escolhidos
+        fc.setFileFilter(filtro);
+
+        //título da tela
+        fc.setDialogTitle("Escolha o arquivo ...");
+
+        //escolhendo somente arquivos
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        //resposta da janela
+        int resposta = fc.showOpenDialog(this);
+
+        //verificando a resposta:
+        //Se o usuário clicar em OK
+        if(resposta == JFileChooser.APPROVE_OPTION){
+
+            File arquivo = fc.getSelectedFile();
+            //pegar o nome do arquivo
+            
+            ManipuladorDeArquivos ma = new ManipuladorDeArquivos();
+            ManipuladorDeGrafos mg = new ManipuladorDeGrafos();
+            ArrayList <Artigo> artigos = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosComCitacao = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores = new ArrayList<Artigo>();
+            ArrayList <Artigo> artigosCitadores2 = new ArrayList<Artigo>();
+            ArrayList <Aresta> arestas = new ArrayList<Aresta>();
+            ArrayList <Aresta> arestasTemp = new ArrayList<Aresta>();
+            
+            artigos = ma.getArtigosScopus(arquivo);
+            File arquivo2 = arquivo;
+            
+            
+            //pegando todas as citações
+            for(Artigo a:artigos){
+            
+            System.out.println("Artigo: "+a.getTitulo());
+            System.out.println("Nº de citações: "+a.getnCitacoes());
+            
+            System.out.println("Artigos: ");
+            
+            if (a.getnCitacoes() > 0){
+                System.out.println("---Tem artigos que citaram");
+                //tipos de arquivos a serem escolhidos:
+                FileNameExtensionFilter filtroCitacao = new FileNameExtensionFilter("CSV", "csv");
+
+                //Usando o JfileChooser
+                JFileChooser fcCitacao = new JFileChooser();
+
+                //adicionando tipos de arquivos que podem ser escolhidos
+                fcCitacao.setFileFilter(filtroCitacao);
+
+                //título da tela
+                fcCitacao.setDialogTitle("Abrindo: "+a.getTitulo());
+                
+                fcCitacao.setCurrentDirectory(arquivo2);
+
+                //escolhendo somente arquivos
+                fcCitacao.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int respostaCitacao = fcCitacao.showOpenDialog(null);
+                if(respostaCitacao == JFileChooser.APPROVE_OPTION){
+                    arquivo2 = fcCitacao.getSelectedFile();
+                    artigosCitadores = ma.getArtigosScopus(arquivo2);
+                    artigosCitadores2 = ma.unirListaArtigos(artigosCitadores2, artigosCitadores);
+                    }
+                
+                }
+                for(Artigo artigoCitador: artigosCitadores){
+                    System.out.println("----"+artigoCitador.getTitulo());
+                    
+                    //Gerando lista de arestas---
+                    arestasTemp = mg.gerarArestasArtigosCitados(a, artigoCitador);
+                    arestas = mg.addSubListaEmLista(arestasTemp, arestas);
+                }    
+              
+            
+            
+            
+            }
+            
+            //this.jProgressBar1.setValue(0);
+            //int i = 0;
+            //this.desktopPane.setVisible(true);
+            
+           //pegando somente artigos com citações
+           for(Artigo artigo:artigos){
+               
+               //this.jProgressBar1.setValue((i++)/artigos.size());
+               if(artigo.getnCitacoes()>0){
+                   artigosComCitacao.add(artigo);
+
+               }
+           }
+           //this.desktopPane.setVisible(false);
+
+           /*
+           System.out.println("mostrando os artigos que foram citados");
+           for(Artigo artigo:artigosComCitacao){
+                System.out.println(artigo.getTitulo());
+           }
+           */
+
+           //unindo as duas listas de artigos:
+           artigos = ma.unirListaArtigos(artigosComCitacao, artigosCitadores2);
+
+
+           
+
+           
+
+           ArrayList<No> nos = new ArrayList<No>();
+           nos = ma.artigosEmNos(artigos);
+           String textoEscrita = mg.gerarTextoNosArrayList("", nos);
+           System.out.println("Artigos");
+           System.out.println(textoEscrita);
+
+          
+
+          
+            
+            //salvando o arquivo
+            fc.setDialogTitle("Salvando o arquivo");
+            //resposta da janela
+            int resposta2 = fc.showOpenDialog(this);
+
+            //verificando a resposta:
+            //Se o usuário clicar em OK
+            if(resposta2 == JFileChooser.APPROVE_OPTION){
+
+                
+
+                File arqSalvo = fc.getSelectedFile();
+                try {
+                    FileWriter fw = new FileWriter( arqSalvo );
+                    ma.escreveCsv(textoEscrita, fw);
+                    JOptionPane.showMessageDialog(this, "Arquivo salvo");
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro"+ex);
+                }
+                
+
+            }
+
+        }
+
+        
+    }//GEN-LAST:event_CitacoesGerarArestasArtigosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -565,21 +1255,26 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem CitacaoesGerarAutores;
+    private javax.swing.JMenuItem CitacoesGerarArestasArtigos;
+    private javax.swing.JMenuItem CitacoesGerarArestasAutores;
+    private javax.swing.JMenuItem CitacoesGerarArtigos;
+    private javax.swing.JMenuItem CoautoriaGerarArestas;
+    private javax.swing.JMenuItem CoautoriaGerarNos;
+    private javax.swing.JMenuItem GeoGerarArestas;
+    private javax.swing.JMenuItem GeoGerarNos;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
